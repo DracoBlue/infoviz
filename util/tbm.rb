@@ -1,7 +1,6 @@
+#!/usr/bin/ruby
 #
 # Example usecase:
-#
-#     thor tbm:import ../data/20070618Data_c.txt http://localhost:5984/test
 #     ruby tbm.rb import ../data/20070618Data_c.txt http://localhost:5984/test
 #
 # importiert die Datei ../data/20070618Data_c.txt in die CouchDB unter der URL
@@ -44,9 +43,8 @@ class TBM < Thor
       data = {}
       zuordnung.zip(row) { |col, val| data.store(col, val) }
       counter = data['New_Counter'].sub!(/\.00$/,'')
-      id = "#{basename}-#{counter}"
-      data.store('_id', id)
-      data.store('filename', filename)
+      data['_id'] = "#{basename}-#{counter}"
+      data['filename'] = filename
       json = JSON.pretty_generate(data)
       post!(couch, json)
     end        
@@ -59,7 +57,7 @@ class TBM < Thor
     spalten = %w"Kartierung_Schicht VK Vortriebsmodus Tunnelmeter Ring Datum"
     
     FasterCSV.foreach('../data/Zielvektoren_mitGeo.txt', :col_sep => "\t", :headers => true) do |row|
-      data.store(row['Ring'], row.to_hash)
+      data[row['Ring']] = row.to_hash
     end
     
     begin 
@@ -71,5 +69,5 @@ class TBM < Thor
 
 end
 
-
+TBM.start
 
