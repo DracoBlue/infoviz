@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <title>Scatterplot</title>
+    <link type="text/css" rel="stylesheet" href="ex.css?3.2"/>
+    <script itype="text/javascript" src="lib/protovis-3.2/protovis-r3.2.js"></script>
+    <script itype="text/javascript" src="lib/mootools-1.2.3.js"></script>
+    <script itype="text/javascript" src="lib/mootools-1.2.4.2-more.js"></script>
+    <script itype="text/javascript" src="lib/SpludoUi.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css" type="text/css" media="all" />
+            
+    <style type="text/css">
+
+#graph {
+    float:left;
+    width: 610px;
+}
+
+#slider {
+    clear:left;
+    float:left;
+    width: 610px;
+}
+
+#controls {
+    float:right;
+    width: 300px;
+    overflow-y:scroll;
+}
+
+    </style>
+  </head>
+  <body><div id="center">
+
+
+
+<div id="graph">
+
+    <script type="text/javascript+protovis">
+// <!--
+var data = pv.range(100).map(function(x) {
+    return {x: x, y: Math.random(), z: Math.pow(10, 2 * Math.random())};
+  });
+
+var test_data = [{"_id":"20070618-999","_rev":"1-656a83fe5446030f983ec80e092d2293","DD":"9461.00","CC":"7.80","BX":"1.40","BB":"1.00","AW":"98.00","New_Counter":"999","DE":"3950.00","CD":"2.00","BY":"2.20","BC":"1.00","AX":"98.00","CE":"229.00","BZ":"3.10","BD":"1356.00","AY":"99.00","CF":"4.00","BE":"48.60","AZ":"94.00","AD":"13724.00","C":"125.00","CG":"319.00","BF":"24.90","AE":"1.70","CH":"104.00","AF":"43.00","DU":"1.80","CT":"104.00","CI":"27.00","AG":"2.00","filename":"20070618Data_c.txt","DV":"1.80","DA":"1.00","CU":"137.00","CJ":"0.26","AH":"2377.00","DB":"7210.00","CV":"1.32","CA":"1.20","DC":"4162.00","CW":"3.40","CB":"2.60","BA":"1413.00","AU":"81.00","CX":"3.60","BW":"3.00","AV":"2446.00","Counter":"6791.00"},
+
+{"_id":"20070618-998","_rev":"1-0ab268b6906aacaa8e59bcd1880f5e44","DD":"9365.00","CC":"7.80","BX":"1.40","BB":"1.00","AW":"97.00","New_Counter":"998","DE":"3950.00","CD":"2.10","BY":"2.00","BC":"1.00","AX":"97.00","CE":"227.00","BZ":"2.60","BD":"1353.00","AY":"99.00","CF":"4.00","BE":"84.00","AZ":"93.00","AD":"13352.00","C":"125.00","CG":"316.00","BF":"24.74","AE":"1.70","CH":"103.00","AF":"144.00","DU":"1.80","CT":"103.00","CI":"27.00","AG":"2.00","filename":"20070618Data_c.txt","DV":"1.80","DA":"1.00","CU":"136.00","CJ":"0.26","AH":"2329.00","DB":"7284.00","CV":"1.32","CA":"1.20","DC":"4162.00","CW":"3.20","CB":"2.40","BA":"1410.00","AU":"81.00","CX":"3.70","BW":"3.00","AV":"2419.00","Counter":"6790.00"}
+
+];
+
+
+var data = pv.range(200).map(function(i) {
+    var x = Math.floor(i/2);
+
+    return{
+        x: x,
+        y: Number(test_data[Math.random() < 0.5 ? 0 : 1].BE) * (i % 2 == 0 ? 0.6 : 0.8),
+        style: i % 2 == 0 ? '#f00' : '#00f',
+        z: 5
+    };
+  });
+
+/* Sizing and scales. */
+var w = 600,
+    h = 300,
+    x = pv.Scale.linear(0, 99).range(0, w),
+    y = pv.Scale.linear(0, 100).range(0, h),
+    c = pv.Scale.log(1, 100).range("orange", "brown");
+
+/* The root panel. */
+var vis = new pv.Panel()
+    .width(w)
+    .height(h)
+    .bottom(20)
+    .left(20)
+    .right(10)
+    .top(5);
+
+/* Y-axis and ticks. */
+vis.add(pv.Rule)
+    .data(y.ticks())
+    .bottom(y)
+    .strokeStyle(function(d) d ? "#eee" : "#000")
+  .anchor("left").add(pv.Label)
+    .visible(function(d) d > 0 && d < 1)
+    .text(y.tickFormat);
+
+/* X-axis and ticks. */
+vis.add(pv.Rule)
+    .data(x.ticks())
+    .left(x)
+    .strokeStyle(function(d) d ? "#eee" : "#000")
+  .anchor("bottom").add(pv.Label)
+    .visible(function(d) d > 0 && d < 100)
+    .text(x.tickFormat);
+
+/* The dot plot! */
+
+vis.add(pv.Panel)
+    .data(data)
+  .add(pv.Dot)
+    .left(function(d) x(d.x))
+    .bottom(function(d) y(d.y))
+    .strokeStyle(function(d) d.style)
+    .fillStyle(function() this.strokeStyle().alpha(.2))
+    .size(function(d) d.z)
+    .title(function(d) d.z.toFixed(1));
+
+// -->
+    </script>
+</div>
+<div id="controls" class="ui-widget ui-widget-content" style="padding: 10px">
+</div>
+<div id="slider">
+    <div class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header" style="left: 28%; width: 49%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 28%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 77%;"></a></div>
+</div>
+
+    <script type="text/javascript">
+// <!--
+
+    var active_button = new spludoui.Button({
+        'text': 'Bohrkopfdrehzahl'
+    }).getDomElement();
+    active_button.addClass('ui-state-active');
+    $('controls').adopt([
+        new spludoui.Button({
+            'text': 'Bohrkopfdrehmoment'
+        }).getDomElement(),
+        active_button,
+        new spludoui.Button({
+            'text': 'Bohrkopfwinkelposition'
+        }).getDomElement(),
+        new spludoui.Button({
+            'text': 'Bohrkopfantriebsleistung'
+        }).getDomElement()
+    ]);
+// -->
+    </script>
+
+</body>
+</html>
+
