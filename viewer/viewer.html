@@ -1,11 +1,12 @@
 <html>
   <head>
-    <title>Scatterplot</title>
+    <title>Viewer</title>
     <link type="text/css" rel="stylesheet" href="ex.css?3.2"/>
     <script itype="text/javascript" src="lib/protovis-3.2/protovis-r3.2.js"></script>
     <script itype="text/javascript" src="lib/mootools-1.2.3.js"></script>
     <script itype="text/javascript" src="lib/mootools-1.2.4.2-more.js"></script>
     <script itype="text/javascript" src="lib/SpludoUi.js"></script>
+    <script itype="text/javascript" src="lib/classes.js"></script>
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css" type="text/css" media="all" />
             
     <style type="text/css">
@@ -113,28 +114,6 @@ vis.add(pv.Panel)
 <div id="slider">
     <div class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header" style="left: 28%; width: 49%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 28%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 77%;"></a></div>
 </div>
-
-    <script type="text/javascript">
-// <!--
-
-    var active_button = new spludoui.Button({
-        'text': 'Bohrkopfdrehzahl'
-    }).getDomElement();
-    active_button.addClass('ui-state-active');
-    $('controls').adopt([
-        new spludoui.Button({
-            'text': 'Bohrkopfdrehmoment'
-        }).getDomElement(),
-        active_button,
-        new spludoui.Button({
-            'text': 'Bohrkopfwinkelposition'
-        }).getDomElement(),
-        new spludoui.Button({
-            'text': 'Bohrkopfantriebsleistung'
-        }).getDomElement()
-    ]);
-// -->
-    </script>
 
 </body>
 </html>
