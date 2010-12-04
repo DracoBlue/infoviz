@@ -19,9 +19,11 @@ project.PageController = new Class({
             controller: this
         });
 
-        var attributesArray = [
+        self.attributes = {};
+        [
                 {
                     'name': 'Vorschubdruck (oberer Sektor)',
+                    'default': true,
                     'key': 'AW'
                 },
                 {
@@ -32,11 +34,10 @@ project.PageController = new Class({
                     'name': 'Erddrucksensor (oben)',
                     'key': 'BX'
                 }
-        ];
-
-        attributesArray.forEach(function(attribute) {
+        ].forEach(function(attribute) {
             self.is_attribute_on[attribute.key] = false;
             attribute_chooser_view.addAttribute(attribute);
+            self.attributes[attribute.key] = attribute;
         });
 
         this.setView('attribute_chooser', attribute_chooser_view);
@@ -70,7 +71,7 @@ project.PageController = new Class({
         {
             if (this.is_attribute_on.hasOwnProperty(key))
             {
-                    if (new_parameters["ac_"+key] === "true")
+                    if (new_parameters["ac_"+key] === "true" || (typeof new_parameters["ac_"+key] === "undefined" && this.attributes[key].default))
                     {
                         this.is_attribute_on[key] = true;
                         this.getView('attribute_chooser').activateAttribute(key);
