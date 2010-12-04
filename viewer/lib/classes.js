@@ -8,6 +8,8 @@ project.PageController = new Class({
 
     is_attribute_on: {},
 
+    parameters: {},
+
     initialize: function(dom_element, options)
     {
         var self = this;
@@ -19,8 +21,16 @@ project.PageController = new Class({
 
         [
                 {
-                    'name': 'Bohrkopfdrehmoment',
-                    'key': 'moveit'
+                    'name': 'Vorschubdruck (oberer Sektor)',
+                    'key': 'AW'
+                },
+                {
+                    'name': 'Druckantrieb Förderschnecke',
+                    'key': 'CE'
+                },
+                {
+                    'name': 'Erddrucksensor (oben)',
+                    'key': 'BX'
                 }
         ].forEach(function(attribute) {
             self.is_attribute_on[attribute.key] = false;
@@ -28,6 +38,59 @@ project.PageController = new Class({
         });
 
         this.setView('attribute_chooser', attribute_chooser_view);
+
+        var previous_hash = null;
+        (function() {
+            var new_hash = document.location.hash.substr(1);
+            if (previous_hash !== new_hash)
+            {
+                previous_hash = new_hash;
+                self.triggerParametersUpdate();
+            }
+        }).periodical(300);
+    },
+
+    getParametersFromUrl: function()
+    {
+        var hash = document.location.hash.substr(1);
+        if (hash === '')
+        {
+            return {};
+        }
+        return hash.parseQueryString();
+    },
+
+    triggerParametersUpdate: function()
+    {
+        var new_parameters = this.getParametersFromUrl();
+
+        for (var key in new_parameters)
+        {
+            if (new_parameters.hasOwnProperty(key))
+            {
+                if (key.substr(0, 3) === 'ac_')
+                {
+                    var attribute_key = key.substr(3);
+                    if (new_parameters[key] === "true")
+                    {
+                        this.is_attribute_on[attribute_key] = true;
+                        this.getView('attribute_chooser').activateAttribute(attribute_key);
+                    }
+                    else
+                    {
+                        this.is_attribute_on[attribute_key] = false;
+                        this.getView('attribute_chooser').deactivateAttribute(attribute_key);
+                    }
+                }
+            }
+        }
+    },
+
+    setParameter: function(key, value)
+    {
+        var old_parameters = this.getParametersFromUrl();
+        old_parameters[key] = value;
+        document.location.hash = '#' + new Hash(old_parameters).toQueryString();
     },
 
     setView: function(key, instance)
@@ -47,14 +110,13 @@ project.PageController = new Class({
     
     toggleAttribute: function(key)
     {
-        this.is_attribute_on[key] = this.is_attribute_on[key] ? false : true;
         if (this.is_attribute_on[key])
         {
-            this.getView('attribute_chooser').activateAttribute(key);
+            this.setParameter('ac_' + key, false);
         }
         else
         {
-            this.getView('attribute_chooser').deactivateAttribute(key);
+            this.setParameter('ac_' + key, true);
         }
     }
 
@@ -94,7 +156,8 @@ project.AttributeChooserView = new Class({
         var button = new spludoui.Button({
             'text': data.name,
             'events': {
-                'click': function() {
+                'click': function(event) {
+                    event.stop();
                     self.controller.toggleAttribute(data.key);
                 }
             }
