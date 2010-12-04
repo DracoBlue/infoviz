@@ -1,7 +1,6 @@
+#!/usr/bin/ruby
 #
 # Example usecase:
-#
-#     thor tbm:import ../data/20070618Data_c.txt http://localhost:5984/test
 #     ruby tbm.rb import ../data/20070618Data_c.txt http://localhost:5984/test
 #
 # importiert die Datei ../data/20070618Data_c.txt in die CouchDB unter der URL
@@ -71,5 +70,6 @@ class TBM < Thor
 
 end
 
+TBM.start
 
 
