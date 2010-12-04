@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 #
 # Example usecase:
 #
