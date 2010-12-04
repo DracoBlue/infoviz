@@ -19,7 +19,7 @@ project.PageController = new Class({
             controller: this
         });
 
-        [
+        var attributesArray = [
                 {
                     'name': 'Vorschubdruck (oberer Sektor)',
                     'key': 'AW'
@@ -32,7 +32,9 @@ project.PageController = new Class({
                     'name': 'Erddrucksensor (oben)',
                     'key': 'BX'
                 }
-        ].forEach(function(attribute) {
+        ];
+
+        attributesArray.forEach(function(attribute) {
             self.is_attribute_on[attribute.key] = false;
             attribute_chooser_view.addAttribute(attribute);
         });
@@ -64,24 +66,21 @@ project.PageController = new Class({
     {
         var new_parameters = this.getParametersFromUrl();
 
-        for (var key in new_parameters)
+        for (var key in this.is_attribute_on)
         {
-            if (new_parameters.hasOwnProperty(key))
+            if (this.is_attribute_on.hasOwnProperty(key))
             {
-                if (key.substr(0, 3) === 'ac_')
-                {
-                    var attribute_key = key.substr(3);
-                    if (new_parameters[key] === "true")
+                    if (new_parameters["ac_"+key] === "true")
                     {
-                        this.is_attribute_on[attribute_key] = true;
-                        this.getView('attribute_chooser').activateAttribute(attribute_key);
+                        this.is_attribute_on[key] = true;
+                        this.getView('attribute_chooser').activateAttribute(key);
                     }
                     else
                     {
-                        this.is_attribute_on[attribute_key] = false;
-                        this.getView('attribute_chooser').deactivateAttribute(attribute_key);
+                        
+                        this.is_attribute_on[key] = false;
+                        this.getView('attribute_chooser').deactivateAttribute(key);
                     }
-                }
             }
         }
     },
@@ -123,7 +122,7 @@ project.PageController = new Class({
 });
 
 project.Slider = new Class({
-    
+
     Implements: [Options, Events],
 
     initialize: function(dom_element, options)
@@ -141,7 +140,7 @@ project.AttributeChooserView = new Class({
     controller: null,
 
     attribute_controls: {},
-    
+
     initialize: function(dom_element, options)
     {
         this.dom_element = dom_element;
