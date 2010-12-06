@@ -57,18 +57,21 @@ project.PageController = new Class({
                     'name': 'Vorschubdruck (oberer Sektor)',
                     'default': true,
                     'color': '#f00', 
+                    'shape': 'square',
                     'scale': 1.0,
                     'key': 'AW'
                 },
                 {
                     'name': 'Druckantrieb Förderschnecke',
                     'color': '#f0F', 
+                    'shape': 'circle',
                     'scale': 1.0,
                     'key': 'CE'
                 },
                 {
                     'name': 'Erddrucksensor (oben)',
                     'color': '#00F', 
+                    'shape': 'diamond',
                     'scale': 100.0,
                     'key': 'BX'
                 }
@@ -194,6 +197,11 @@ project.PageController = new Class({
         return this.views[key];
     },
 
+    getAttributeShape: function(key)
+    {
+        return this.attributes[key].shape;
+    },
+    
     getAttributeScale: function(key)
     {
         return this.attributes[key].scale;
@@ -348,11 +356,15 @@ project.GraphView = new Class({
         return this.controller.getAttributeColor(key);
     },
 
+    getAttributeShape: function(key)
+    {
+        return this.controller.getAttributeShape(key);
+    },
+
     getAttributeScale: function(key)
     {
         return this.controller.getAttributeScale(key);
     },
-
 
     createDotsForData: function(data)
     {
@@ -379,6 +391,7 @@ project.GraphView = new Class({
                             x: circle,
                             title: 'Value: ' + value,
                             y: this.getAttributeScale(key) * value,
+                            shape: this.getAttributeShape(key),
                             style: this.getAttributeColor(key),
                             z: size
                         });
@@ -450,6 +463,9 @@ project.GraphView = new Class({
           .add(pv.Dot)
             .left(function(d) {
                 return x(d.x);
+            })
+            .shape(function(d) {
+                return d.shape;
             })
             .bottom(function(d) {
                 return y(d.y);
