@@ -243,7 +243,7 @@ project.SliderView = new Class({
 
         this.max_circle_element.addEvent('change', update_handler);
         this.min_circle_element.addEvent('change', update_handler);
-        this.dom_element.adopt([new Element('label', {'text':'Min Circle'}), this.min_circle_element,new Element('label', {'text':'Max Circle'}), this.max_circle_element]);
+        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Circle'}), this.min_circle_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Circle'}), this.max_circle_element]);
     },
 
     setMinCircle: function(value)
@@ -392,6 +392,13 @@ project.GraphView = new Class({
     refresh: function(data)
     {
         var dots = this.createDotsForData(data);
+
+        var svg = this.dom_element.getElement('svg');
+        if (svg)
+        {
+            svg.destroy();
+        }
+
         this.dom_element.empty();
         this.dom_element.fade('out');
         /* Sizing and scales. */
