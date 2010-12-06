@@ -377,6 +377,7 @@ project.GraphView = new Class({
                     {
                         dots.push({
                             x: circle,
+                            title: 'Value: ' + value,
                             y: this.getAttributeScale(key) * value,
                             style: this.getAttributeColor(key),
                             z: size
@@ -456,7 +457,7 @@ project.GraphView = new Class({
                 return d.z;
             })
             .title(function(d) {
-                return d.z.toFixed(1);
+                return d.title;
             });
 
         this.dom_element.fade('hide');
