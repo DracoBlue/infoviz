@@ -235,13 +235,32 @@ project.GraphView = new Class({
                 var raw_data_length = raw_data.length;
 
                 var circle_in_use = {};
+                var circle_max = {};
+                var circle_min = {};
 
                 for (var i=0; i < raw_data_length; i++)
                 {
                     if (typeof circle_in_use[raw_data[i].key] === 'undefined')
                     {
                         circle_in_use[raw_data[i].key] = true;
-                        data.push([parseInt(raw_data[i].key), raw_data[i].value]);
+                        circle_max[raw_data[i].key] = raw_data[i].value;
+                        circle_min[raw_data[i].key] = raw_data[i].value;
+                    } else {
+                        circle_max[raw_data[i].key] = Math.max(raw_data[i].value, circle_max[raw_data[i].key]);
+                        circle_min[raw_data[i].key] = Math.min(raw_data[i].value, circle_min[raw_data[i].key]);
+                    }
+                }
+
+                circle_in_use = {};
+
+                for (var i=0; i < raw_data_length; i++)
+                {
+                    if (typeof circle_in_use[raw_data[i].key] === 'undefined')
+                    {
+                        circle_in_use[raw_data[i].key] = true;
+                        circle_size = Math.sqrt(circle_max[raw_data[i].key] - circle_min[raw_data[i].key]) * 10;
+                        circle_size = Math.min(circle_size, 1000);
+                        data.push([parseInt(raw_data[i].key), raw_data[i].value, circle_size]);
                     }
                 }
 
@@ -297,14 +316,13 @@ project.GraphView = new Class({
                 {
                     var circle = points[i][0];
                     var value = points[i][1];
+                    var size = points[i][2];
                    
-                        // y: value * (circle % 2 == 0 ? 0.6 : 0.8),
-                        // y: this.getAttributeScale(key) * value,
                     dots.push({
                         x: circle,
                         y: this.getAttributeScale(key) * value,
                         style: this.getAttributeColor(key),
-                        z: 10
+                        z: size
                     });
                 }
             }
