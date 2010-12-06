@@ -259,7 +259,7 @@ project.GraphView = new Class({
                     {
                         circle_in_use[raw_data[i].key] = true;
                         circle_size = Math.sqrt(circle_max[raw_data[i].key] - circle_min[raw_data[i].key]) * 10;
-                        circle_size = Math.min(circle_size, 1000);
+                        circle_size = Math.max(5, 100 - Math.min(circle_size, 100));
                         data.push([parseInt(raw_data[i].key), raw_data[i].value, circle_size]);
                     }
                 }
