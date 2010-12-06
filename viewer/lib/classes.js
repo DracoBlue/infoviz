@@ -31,6 +31,9 @@ project.PageController = new Class({
 
     parameters: {},
 
+    min_circle: 123,
+    max_circle: 262,
+
     initialize: function(dom_element, options)
     {
         var self = this;
@@ -41,6 +44,10 @@ project.PageController = new Class({
         });
 
         var graph_view = new project.GraphView($('graph'), {
+            controller: this
+        });
+
+        var slider_view = new project.SliderView($('slider'), {
             controller: this
         });
 
@@ -73,6 +80,7 @@ project.PageController = new Class({
 
         this.setView('attribute_chooser', attribute_chooser_view);
         this.setView('graph', graph_view);
+        this.setView('slider', slider_view);
 
         var previous_hash = null;
         (function() {
@@ -195,13 +203,33 @@ project.PageController = new Class({
 
 });
 
-project.Slider = new Class({
+project.SliderView = new Class({
 
     Implements: [Options, Events],
 
     initialize: function(dom_element, options)
     {
+        this.dom_element = dom_element;
+        this.controller = options.controller;
+
         this.setOptions(options);
+        this.min_circle_element = new Element('input', {
+            'class': 'ui-widget-content ui-corner-all',
+            'value': 123
+        });
+        this.max_circle_element = new Element('input', {
+            'class': 'ui-widget-content ui-corner-all',
+            'value': 262
+        });
+        var update_handler = function() {
+            this.controller.min_circle = this.min_circle_element.get('value');
+            this.controller.max_circle = this.max_circle_element.get('value');
+            this.controller.refreshGraph();
+        }.bind(this);
+
+        this.max_circle_element.addEvent('change', update_handler);
+        this.min_circle_element.addEvent('change', update_handler);
+        this.dom_element.adopt([new Element('label', {'text':'Min Circle'}), this.min_circle_element,new Element('label', {'text':'Max Circle'}), this.max_circle_element]);
     }
 });
 
@@ -338,7 +366,7 @@ project.GraphView = new Class({
         /* Sizing and scales. */
         var w = 600,
             h = 300,
-            x = pv.Scale.linear(123, 262).range(0, w),
+            x = pv.Scale.linear(this.controller.min_circle, this.controller.max_circle).range(0, w),
             y = pv.Scale.linear(0, 200).range(0, h),
             c = pv.Scale.log(1, 200).range("orange", "brown");
 
