@@ -1,5 +1,5 @@
 {
-  "id": "couchapp",
+  "id": "viewer",
   "mapDirectories": {
       "config.js": "",
       "index.html": "_attachments/index.html",

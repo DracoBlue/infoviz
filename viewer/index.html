@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <title>Viewer</title>
-    <link type="text/css" rel="stylesheet" href="ex.css?3.2"/>
     <script itype="text/javascript" src="lib/protovis-3.2/protovis-r3.2.js"></script>
     <script itype="text/javascript" src="lib/mootools-1.2.3.js"></script>
     <script itype="text/javascript" src="lib/mootools-1.2.4.2-more.js"></script>
@@ -109,6 +108,7 @@ vis.add(pv.Panel)
     .size(function(d) d.z)
     .title(function(d) d.z.toFixed(1));
 
+vis.render();
 // -->
     </script>
 </div>
