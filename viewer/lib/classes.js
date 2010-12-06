@@ -304,7 +304,7 @@ project.GraphView = new Class({
                         x: circle,
                         y: this.getAttributeScale(key) * value,
                         style: this.getAttributeColor(key),
-                        z: 5
+                        z: 10
                     });
                 }
             }
