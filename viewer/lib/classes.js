@@ -125,6 +125,21 @@ project.PageController = new Class({
             }
         }
 
+        var min_changed = (this.min_circle != new_parameters['min_c']) ? true : false;
+        var max_changed = (this.max_circle != new_parameters['max_c']) ? true : false;
+
+        this.min_circle = new_parameters['min_c'] || 123;
+        this.max_circle = new_parameters['max_c'] || 262;
+
+        if (min_changed)
+        {
+            this.getView('slider').setMinCircle(this.min_circle);
+        }
+
+        if (max_changed)
+        {
+            this.getView('slider').setMaxCircle(this.max_circle);
+        }
 
         this.refreshGraph();
     },
@@ -222,14 +237,23 @@ project.SliderView = new Class({
             'value': 262
         });
         var update_handler = function() {
-            this.controller.min_circle = this.min_circle_element.get('value');
-            this.controller.max_circle = this.max_circle_element.get('value');
-            this.controller.refreshGraph();
+            this.controller.setParameter('min_c', this.min_circle_element.get('value'));
+            this.controller.setParameter('max_c', this.max_circle_element.get('value'));
         }.bind(this);
 
         this.max_circle_element.addEvent('change', update_handler);
         this.min_circle_element.addEvent('change', update_handler);
         this.dom_element.adopt([new Element('label', {'text':'Min Circle'}), this.min_circle_element,new Element('label', {'text':'Max Circle'}), this.max_circle_element]);
+    },
+
+    setMinCircle: function(value)
+    {
+        this.min_circle_element.set('value', value);
+    },
+
+    setMaxCircle: function(value)
+    {
+        this.max_circle_element.set('value', value);
     }
 });
 
@@ -345,13 +369,19 @@ project.GraphView = new Class({
                     var circle = points[i][0];
                     var value = points[i][1];
                     var size = points[i][2];
-                   
-                    dots.push({
-                        x: circle,
-                        y: this.getAttributeScale(key) * value,
-                        style: this.getAttributeColor(key),
-                        z: size
-                    });
+
+                    /*
+                     * TODO: refactor to getter.
+                     */
+                    if (this.controller.min_circle <= circle && circle <= this.controller.max_circle)
+                    {
+                        dots.push({
+                            x: circle,
+                            y: this.getAttributeScale(key) * value,
+                            style: this.getAttributeColor(key),
+                            z: size
+                        });
+                    }
                 }
             }
         }
