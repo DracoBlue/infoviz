@@ -56,21 +56,21 @@ project.PageController = new Class({
                 {
                     'name': 'Vorschubdruck (oberer Sektor)',
                     'default': true,
-                    'color': 'rgba(255,0,0,0.2)', 
+                    'color': '255,0,0', 
                     'shape': 'square',
                     'scale': 1.0,
                     'key': 'AW'
                 },
                 {
                     'name': 'Druckantrieb Förderschnecke',
-                    'color': '#f0F', 
+                    'color': '255,0,255', 
                     'shape': 'ring',
                     'scale': 1.0,
                     'key': 'CE'
                 },
                 {
                     'name': 'Erddrucksensor (oben)',
-                    'color': '#00F', 
+                    'color': '0,0,255', 
                     'shape': 'diamond',
                     'scale': 100.0,
                     'key': 'BX'
@@ -418,11 +418,9 @@ project.GraphView = new Class({
                         dots.push({
                             x: ring,
                             title: 'Value: ' + value,
-                            // y: this.getAttributeScale(key) * value,
                             y: 200 * (parseInt(pos) / segments_count),
                             shape: this.getAttributeShape(key),
-                            // style: this.getAttributeColor(key),
-                            style: 'rgba(255,0,0,' + alpha + ')',
+                            style: 'rgba(' + this.getAttributeColor(key) + ',' + alpha + ')',
                             pos: pos 
                         });
                     }
