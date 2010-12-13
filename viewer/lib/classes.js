@@ -56,7 +56,7 @@ project.PageController = new Class({
                 {
                     'name': 'Vorschubdruck (oberer Sektor)',
                     'default': true,
-                    'color': '#f00', 
+                    'color': 'rgba(255,0,0,0.2)', 
                     'shape': 'square',
                     'scale': 1.0,
                     'key': 'AW'
@@ -320,6 +320,7 @@ project.GraphView = new Class({
                         circle_in_use[raw_data[i].key] = true;
                         circle_size = Math.sqrt(circle_max[raw_data[i].key] - circle_min[raw_data[i].key]) * 10;
                         circle_size = Math.max(5, 100 - Math.min(circle_size, 100));
+                        circle_size = 75;
                         data.push([parseInt(raw_data[i].key), (circle_max[raw_data[i].key] + circle_min[raw_data[i].key])/2, circle_size]);
                     }
                 }
@@ -474,7 +475,8 @@ project.GraphView = new Class({
                 return d.style;
             })
             .fillStyle(function() {
-                return this.strokeStyle().alpha(.2)
+                // return this.strokeStyle().alpha(.2)
+                return this.strokeStyle().alpha(.4);
             })
             .size(function(d) {
                 return d.z;
