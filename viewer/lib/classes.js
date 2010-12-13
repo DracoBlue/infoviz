@@ -33,6 +33,7 @@ project.PageController = new Class({
 
     min_ring: 123,
     max_ring: 262,
+    segments_count: 30,
 
     initialize: function(dom_element, options)
     {
@@ -113,7 +114,7 @@ project.PageController = new Class({
 
     getSegmentsCount: function()
     {
-        return 30;
+        return this.segments_count;
     },
 
     getParametersFromUrl: function()
@@ -150,9 +151,11 @@ project.PageController = new Class({
 
         var min_changed = (this.min_ring != new_parameters['min_c']) ? true : false;
         var max_changed = (this.max_ring != new_parameters['max_c']) ? true : false;
+        var segments_count_changed = (this.segments_count != new_parameters['seg_c']) ? true : false;
 
         this.min_ring = parseInt(new_parameters['min_c'] || 123);
         this.max_ring = parseInt(new_parameters['max_c'] || 262);
+        this.segments_count = parseInt(new_parameters['seg_c'] || 30);
 
         if (min_changed)
         {
@@ -162,6 +165,11 @@ project.PageController = new Class({
         if (max_changed)
         {
             this.getView('slider').setMaxRing(this.max_ring);
+        }
+
+        if (segments_count_changed)
+        {
+            this.getView('slider').setSegmentsCount(this.segments_count);
         }
 
         this.refreshGraph();
@@ -264,14 +272,24 @@ project.SliderView = new Class({
             'class': 'ui-widget-content ui-corner-all',
             'value': 262
         });
+        this.segments_count_element = new Element('input', {
+            'class': 'ui-widget-content ui-corner-all',
+            'value': 30
+        });
         var update_handler = function() {
             this.controller.setParameter('min_c', this.min_ring_element.get('value'));
             this.controller.setParameter('max_c', this.max_ring_element.get('value'));
+            this.controller.setParameter('seg_c', this.segments_count_element.get('value'));
         }.bind(this);
 
         this.max_ring_element.addEvent('change', update_handler);
         this.min_ring_element.addEvent('change', update_handler);
-        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Ring'}), this.min_ring_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Ring'}), this.max_ring_element]);
+        this.segments_count_element.addEvent('change', update_handler);
+        this.dom_element.adopt([
+            new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Ring'}), this.min_ring_element,
+            new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Ring'}), this.max_ring_element,
+            new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Segments'}), this.segments_count_element
+        ]);
     },
 
     setMinRing: function(value)
@@ -282,6 +300,11 @@ project.SliderView = new Class({
     setMaxRing: function(value)
     {
         this.max_ring_element.set('value', value);
+    },
+
+    setSegmentsCount: function(value)
+    {
+        this.segments_count_element.set('value', value);
     }
 });
 
