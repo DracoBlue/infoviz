@@ -101,9 +101,19 @@ project.PageController = new Class({
         return this.max_ring - this.min_ring + 1;
     },
 
+    getMaxRing: function()
+    {
+        return this.max_ring;
+    },
+
     getMinRing: function()
     {
         return this.min_ring;
+    },
+
+    getSegmentsCount: function()
+    {
+        return 10;
     },
 
     getParametersFromUrl: function()
@@ -141,8 +151,8 @@ project.PageController = new Class({
         var min_changed = (this.min_ring != new_parameters['min_c']) ? true : false;
         var max_changed = (this.max_ring != new_parameters['max_c']) ? true : false;
 
-        this.min_ring = new_parameters['min_c'] || 123;
-        this.max_ring = new_parameters['max_c'] || 262;
+        this.min_ring = parseInt(new_parameters['min_c'] || 123);
+        this.max_ring = parseInt(new_parameters['max_c'] || 262);
 
         if (min_changed)
         {
@@ -290,6 +300,8 @@ project.GraphView = new Class({
 
     retrieveData: function(callback, key, ring_start, ring_end)
     {
+        var self = this;
+
         if (this.cache[key])
         {
             callback(true, this.cache[key]);
@@ -317,7 +329,7 @@ project.GraphView = new Class({
 
                 var overall_range = overall_maximum - overall_minimum;
 
-                var segments_count = 18;
+                var segments_count = self.controller.getSegmentsCount();
 
                 var get_segment_pos = function(value)
                 {
@@ -346,7 +358,12 @@ project.GraphView = new Class({
                         {
                             if (ring_data.hasOwnProperty(pos))
                             {
-                                data.push([ring, Math.round((overall_minimum + overall_range * (parseInt(pos) + 0.5))/segments_count), pos, ring_data[pos] / items_per_ring[ring]]);
+                                data.push([
+                                    ring,
+                                    Math.round((overall_minimum + overall_range * (parseInt(pos)))/segments_count),
+                                    pos,
+                                    ring_data[pos] / items_per_ring[ring]
+                                ]);
                             }
                         }
                     }
@@ -378,6 +395,7 @@ project.GraphView = new Class({
     createDotsForData: function(data)
     {
         var dots = [];
+        var segments_count = this.controller.getSegmentsCount();
 
         for (var key in data)
         {
@@ -400,7 +418,8 @@ project.GraphView = new Class({
                         dots.push({
                             x: ring,
                             title: 'Value: ' + value,
-                            y: this.getAttributeScale(key) * value,
+                            // y: this.getAttributeScale(key) * value,
+                            y: 200 * (parseInt(pos) / segments_count),
                             shape: this.getAttributeShape(key),
                             // style: this.getAttributeColor(key),
                             style: 'rgba(255,0,0,' + alpha + ')',
@@ -430,9 +449,8 @@ project.GraphView = new Class({
         /* Sizing and scales. */
         var w = 600,
             h = 300,
-            x = pv.Scale.linear(this.controller.getMinRing(), this.controller.max_ring).range(0, w),
-            y = pv.Scale.linear(0, 200).range(0, h),
-            c = pv.Scale.log(1, 200).range("orange", "brown");
+            x = pv.Scale.linear(this.controller.getMinRing(), this.controller.getMaxRing() + 1).range(0, w),
+            y = pv.Scale.linear(0, 200).range(0, h);
 
         /* The root panel. */
         var vis = new pv.Panel()
@@ -471,7 +489,7 @@ project.GraphView = new Class({
 
         /* The dot plot! */
 
-        var segments_count = 16;
+        var segments_count = this.controller.getSegmentsCount();
 
         vis.add(pv.Panel)
             .data(dots)
@@ -482,11 +500,8 @@ project.GraphView = new Class({
             .bottom(function(d) {
                 return y(d.y);
             })
-            .strokeStyle(function(d) {
+            .fillStyle(function(d) {
                 return d.style;
-            })
-            .fillStyle(function() {
-                return this.strokeStyle();
             })
             .height(function(d) {
                 return h / segments_count;
