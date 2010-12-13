@@ -96,6 +96,16 @@ project.PageController = new Class({
         }).periodical(100);
     },
 
+    getRingCount: function()
+    {
+        return this.max_ring - this.min_ring + 1;
+    },
+
+    getMinRing: function()
+    {
+        return this.min_ring;
+    },
+
     getParametersFromUrl: function()
     {
         var hash = document.location.hash.substr(1);
@@ -136,12 +146,12 @@ project.PageController = new Class({
 
         if (min_changed)
         {
-            this.getView('slider').setMinCircle(this.min_ring);
+            this.getView('slider').setMinRing(this.min_ring);
         }
 
         if (max_changed)
         {
-            this.getView('slider').setMaxCircle(this.max_ring);
+            this.getView('slider').setMaxRing(this.max_ring);
         }
 
         this.refreshGraph();
@@ -251,15 +261,15 @@ project.SliderView = new Class({
 
         this.max_ring_element.addEvent('change', update_handler);
         this.min_ring_element.addEvent('change', update_handler);
-        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Circle'}), this.min_ring_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Circle'}), this.max_ring_element]);
+        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Ring'}), this.min_ring_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Ring'}), this.max_ring_element]);
     },
 
-    setMinCircle: function(value)
+    setMinRing: function(value)
     {
         this.min_ring_element.set('value', value);
     },
 
-    setMaxCircle: function(value)
+    setMaxRing: function(value)
     {
         this.max_ring_element.set('value', value);
     }
@@ -327,8 +337,6 @@ project.GraphView = new Class({
                     segments_data[ring][pos] = (segments_data[ring][pos] || 0) + 1;
                 }
 
-                var ring_size = 76;
-
                 for (var ring in segments_data)
                 {
                     if (segments_data.hasOwnProperty(ring))
@@ -338,7 +346,7 @@ project.GraphView = new Class({
                         {
                             if (ring_data.hasOwnProperty(pos))
                             {
-                                data.push([ring, Math.round((overall_minimum + overall_range * (parseInt(pos) + 0.5))/segments_count), ring_size, ring_data[pos] / items_per_ring[ring]]);
+                                data.push([ring, Math.round((overall_minimum + overall_range * (parseInt(pos) + 0.5))/segments_count), pos, ring_data[pos] / items_per_ring[ring]]);
                             }
                         }
                     }
@@ -381,13 +389,13 @@ project.GraphView = new Class({
                 {
                     var ring = points[i][0];
                     var value = points[i][1];
-                    var size = points[i][2];
+                    var pos = points[i][2];
                     var alpha = points[i][3];
 
                     /*
                      * TODO: refactor to getter.
                      */
-                    if (this.controller.min_ring <= ring && ring <= this.controller.max_ring)
+                    if (this.controller.getMinRing() <= ring && ring <= this.controller.max_ring)
                     {
                         dots.push({
                             x: ring,
@@ -396,7 +404,7 @@ project.GraphView = new Class({
                             shape: this.getAttributeShape(key),
                             // style: this.getAttributeColor(key),
                             style: 'rgba(255,0,0,' + alpha + ')',
-                            z: size
+                            pos: pos 
                         });
                     }
                 }
@@ -407,6 +415,8 @@ project.GraphView = new Class({
 
     refresh: function(data)
     {
+        var self = this;
+
         var dots = this.createDotsForData(data);
 
         var svg = this.dom_element.getElement('svg');
@@ -420,7 +430,7 @@ project.GraphView = new Class({
         /* Sizing and scales. */
         var w = 600,
             h = 300,
-            x = pv.Scale.linear(this.controller.min_ring, this.controller.max_ring).range(0, w),
+            x = pv.Scale.linear(this.controller.getMinRing(), this.controller.max_ring).range(0, w),
             y = pv.Scale.linear(0, 200).range(0, h),
             c = pv.Scale.log(1, 200).range("orange", "brown");
 
@@ -461,14 +471,13 @@ project.GraphView = new Class({
 
         /* The dot plot! */
 
+        var segments_count = 16;
+
         vis.add(pv.Panel)
             .data(dots)
-          .add(pv.Dot)
+          .add(pv.Bar)
             .left(function(d) {
                 return x(d.x);
-            })
-            .shape(function(d) {
-                return d.shape;
             })
             .bottom(function(d) {
                 return y(d.y);
@@ -477,12 +486,13 @@ project.GraphView = new Class({
                 return d.style;
             })
             .fillStyle(function() {
-                // return this.strokeStyle().alpha(.2)
-                // return this.strokeStyle().alpha(.4);
                 return this.strokeStyle();
             })
-            .size(function(d) {
-                return d.z;
+            .height(function(d) {
+                return h / segments_count;
+            })
+            .width(function(d) {
+                return w / self.controller.getRingCount();
             })
             .title(function(d) {
                 return d.title;
