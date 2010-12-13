@@ -31,8 +31,8 @@ project.PageController = new Class({
 
     parameters: {},
 
-    min_circle: 123,
-    max_circle: 262,
+    min_ring: 123,
+    max_ring: 262,
 
     initialize: function(dom_element, options)
     {
@@ -64,7 +64,7 @@ project.PageController = new Class({
                 {
                     'name': 'Druckantrieb Förderschnecke',
                     'color': '#f0F', 
-                    'shape': 'circle',
+                    'shape': 'ring',
                     'scale': 1.0,
                     'key': 'CE'
                 },
@@ -128,20 +128,20 @@ project.PageController = new Class({
             }
         }
 
-        var min_changed = (this.min_circle != new_parameters['min_c']) ? true : false;
-        var max_changed = (this.max_circle != new_parameters['max_c']) ? true : false;
+        var min_changed = (this.min_ring != new_parameters['min_c']) ? true : false;
+        var max_changed = (this.max_ring != new_parameters['max_c']) ? true : false;
 
-        this.min_circle = new_parameters['min_c'] || 123;
-        this.max_circle = new_parameters['max_c'] || 262;
+        this.min_ring = new_parameters['min_c'] || 123;
+        this.max_ring = new_parameters['max_c'] || 262;
 
         if (min_changed)
         {
-            this.getView('slider').setMinCircle(this.min_circle);
+            this.getView('slider').setMinCircle(this.min_ring);
         }
 
         if (max_changed)
         {
-            this.getView('slider').setMaxCircle(this.max_circle);
+            this.getView('slider').setMaxCircle(this.max_ring);
         }
 
         this.refreshGraph();
@@ -236,32 +236,32 @@ project.SliderView = new Class({
         this.controller = options.controller;
 
         this.setOptions(options);
-        this.min_circle_element = new Element('input', {
+        this.min_ring_element = new Element('input', {
             'class': 'ui-widget-content ui-corner-all',
             'value': 123
         });
-        this.max_circle_element = new Element('input', {
+        this.max_ring_element = new Element('input', {
             'class': 'ui-widget-content ui-corner-all',
             'value': 262
         });
         var update_handler = function() {
-            this.controller.setParameter('min_c', this.min_circle_element.get('value'));
-            this.controller.setParameter('max_c', this.max_circle_element.get('value'));
+            this.controller.setParameter('min_c', this.min_ring_element.get('value'));
+            this.controller.setParameter('max_c', this.max_ring_element.get('value'));
         }.bind(this);
 
-        this.max_circle_element.addEvent('change', update_handler);
-        this.min_circle_element.addEvent('change', update_handler);
-        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Circle'}), this.min_circle_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Circle'}), this.max_circle_element]);
+        this.max_ring_element.addEvent('change', update_handler);
+        this.min_ring_element.addEvent('change', update_handler);
+        this.dom_element.adopt([new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Min Circle'}), this.min_ring_element,new Element('label', {'class': 'ui-widget-header ui-corner-all', 'text':'Max Circle'}), this.max_ring_element]);
     },
 
     setMinCircle: function(value)
     {
-        this.min_circle_element.set('value', value);
+        this.min_ring_element.set('value', value);
     },
 
     setMaxCircle: function(value)
     {
-        this.max_circle_element.set('value', value);
+        this.max_ring_element.set('value', value);
     }
 });
 
@@ -278,7 +278,7 @@ project.GraphView = new Class({
 
     cache: {},
 
-    retrieveData: function(callback, key, circle_start, circle_end)
+    retrieveData: function(callback, key, ring_start, ring_end)
     {
         if (this.cache[key])
         {
@@ -294,34 +294,53 @@ project.GraphView = new Class({
                 var raw_data = raw_json_data.rows;
                 var raw_data_length = raw_data.length;
 
-                var circle_in_use = {};
-                var circle_max = {};
-                var circle_min = {};
+                var overall_maximum = raw_data[0].value;
+                var overall_minimum = raw_data[0].value;
 
-                for (var i=0; i < raw_data_length; i++)
+                var items_per_ring = {};
+
+                for (var i=1; i < raw_data_length; i++)
                 {
-                    if (typeof circle_in_use[raw_data[i].key] === 'undefined')
-                    {
-                        circle_in_use[raw_data[i].key] = true;
-                        circle_max[raw_data[i].key] = raw_data[i].value;
-                        circle_min[raw_data[i].key] = raw_data[i].value;
-                    } else {
-                        circle_max[raw_data[i].key] = Math.max(raw_data[i].value, circle_max[raw_data[i].key]);
-                        circle_min[raw_data[i].key] = Math.min(raw_data[i].value, circle_min[raw_data[i].key]);
-                    }
+                    overall_maximum = Math.max(overall_maximum, raw_data[i].value);
+                    overall_minimum = Math.min(overall_minimum, raw_data[i].value);
                 }
 
-                circle_in_use = {};
+                var overall_range = overall_maximum - overall_minimum;
+
+                var segments_count = 18;
+
+                var get_segment_pos = function(value)
+                {
+                    return Math.floor(segments_count * ((value - overall_minimum) / overall_range));
+                }
+
+                var segments_data = {};
 
                 for (var i=0; i < raw_data_length; i++)
                 {
-                    if (typeof circle_in_use[raw_data[i].key] === 'undefined')
+                    var ring = raw_data[i].key;
+                    var value = raw_data[i].value;
+                    var pos = get_segment_pos(value);
+                    
+                    items_per_ring[ring] = (items_per_ring[ring] || 0) + 1;
+                    segments_data[ring] = segments_data[ring] || [];
+                    segments_data[ring][pos] = (segments_data[ring][pos] || 0) + 1;
+                }
+
+                var ring_size = 76;
+
+                for (var ring in segments_data)
+                {
+                    if (segments_data.hasOwnProperty(ring))
                     {
-                        circle_in_use[raw_data[i].key] = true;
-                        circle_size = Math.sqrt(circle_max[raw_data[i].key] - circle_min[raw_data[i].key]) * 10;
-                        circle_size = Math.max(5, 100 - Math.min(circle_size, 100));
-                        circle_size = 75;
-                        data.push([parseInt(raw_data[i].key), (circle_max[raw_data[i].key] + circle_min[raw_data[i].key])/2, circle_size]);
+                        var ring_data = segments_data[ring];
+                        for (var pos in ring_data)
+                        {
+                            if (ring_data.hasOwnProperty(pos))
+                            {
+                                data.push([ring, Math.round((overall_minimum + overall_range * (parseInt(pos) + 0.5))/segments_count), ring_size, ring_data[pos] / items_per_ring[ring]]);
+                            }
+                        }
                     }
                 }
 
@@ -331,25 +350,6 @@ project.GraphView = new Class({
             }.bind(this)
         }).get();
  
-    },
-
-    retrieveData2: function(callback, key, circle_start, circle_end)
-    {
-       var mock_data =[{"_id":"20070618-999","_rev":"1-656a83fe5446030f983ec80e092d2293","DD":"9461.00","CC":"7.80","BX":"1.40","BB":"1.00","AW":"98.00","New_Counter":"999","DE":"3950.00","CD":"2.00","BY":"2.20","BC":"1.00","AX":"98.00","CE":"229.00","BZ":"3.10","BD":"1356.00","AY":"99.00","CF":"4.00","BE":"48.60","AZ":"94.00","AD":"13724.00","C":"125.00","CG":"319.00","BF":"24.90","AE":"1.70","CH":"104.00","AF":"43.00","DU":"1.80","CT":"104.00","CI":"27.00","AG":"2.00","filename":"20070618Data_c.txt","DV":"1.80","DA":"1.00","CU":"137.00","CJ":"0.26","AH":"2377.00","DB":"7210.00","CV":"1.32","CA":"1.20","DC":"4162.00","CW":"3.40","CB":"2.60","BA":"1413.00","AU":"81.00","CX":"3.60","BW":"3.00","AV":"2446.00","Counter":"6791.00"},
-
-        {"_id":"20070618-998","_rev":"1-0ab268b6906aacaa8e59bcd1880f5e44","DD":"9365.00","CC":"7.80","BX":"1.40","BB":"1.00","AW":"97.00","New_Counter":"998","DE":"3950.00","CD":"2.10","BY":"2.00","BC":"1.00","AX":"97.00","CE":"227.00","BZ":"2.60","BD":"1353.00","AY":"99.00","CF":"4.00","BE":"84.00","AZ":"93.00","AD":"13352.00","C":"126.00","CG":"316.00","BF":"24.74","AE":"1.70","CH":"103.00","AF":"144.00","DU":"1.80","CT":"103.00","CI":"27.00","AG":"2.00","filename":"20070618Data_c.txt","DV":"1.80","DA":"1.00","CU":"136.00","CJ":"0.26","AH":"2329.00","DB":"7284.00","CV":"1.32","CA":"1.20","DC":"4162.00","CW":"3.20","CB":"2.40","BA":"1410.00","AU":"81.00","CX":"3.70","BW":"3.00","AV":"2419.00","Counter":"6790.00"}
-        ];
-
-        var data = [];
-        var raw_data = mock_data;
-        var raw_data_length = raw_data.length;
-
-        for (var i=0; i < raw_data_length; i++)
-        {
-            data.push([parseInt(raw_data[i].C), raw_data[i][key]]);
-        }
-
-        callback(true, data);
     },
 
     getAttributeColor: function(key)
@@ -379,21 +379,23 @@ project.GraphView = new Class({
                 var points_length = points.length;
                 for (var i = 0; i < points_length; i++)
                 {
-                    var circle = points[i][0];
+                    var ring = points[i][0];
                     var value = points[i][1];
                     var size = points[i][2];
+                    var alpha = points[i][3];
 
                     /*
                      * TODO: refactor to getter.
                      */
-                    if (this.controller.min_circle <= circle && circle <= this.controller.max_circle)
+                    if (this.controller.min_ring <= ring && ring <= this.controller.max_ring)
                     {
                         dots.push({
-                            x: circle,
+                            x: ring,
                             title: 'Value: ' + value,
                             y: this.getAttributeScale(key) * value,
                             shape: this.getAttributeShape(key),
-                            style: this.getAttributeColor(key),
+                            // style: this.getAttributeColor(key),
+                            style: 'rgba(255,0,0,' + alpha + ')',
                             z: size
                         });
                     }
@@ -418,7 +420,7 @@ project.GraphView = new Class({
         /* Sizing and scales. */
         var w = 600,
             h = 300,
-            x = pv.Scale.linear(this.controller.min_circle, this.controller.max_circle).range(0, w),
+            x = pv.Scale.linear(this.controller.min_ring, this.controller.max_ring).range(0, w),
             y = pv.Scale.linear(0, 200).range(0, h),
             c = pv.Scale.log(1, 200).range("orange", "brown");
 
@@ -476,7 +478,8 @@ project.GraphView = new Class({
             })
             .fillStyle(function() {
                 // return this.strokeStyle().alpha(.2)
-                return this.strokeStyle().alpha(.4);
+                // return this.strokeStyle().alpha(.4);
+                return this.strokeStyle();
             })
             .size(function(d) {
                 return d.z;
