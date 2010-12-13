@@ -357,7 +357,7 @@ project.GraphView = new Class({
                 var get_segment_pos = function(value)
                 {
                     return Math.floor(segments_count * ((value - overall_minimum) / overall_range));
-                }
+                };
 
                 var segments_data = {};
 
@@ -441,7 +441,7 @@ project.GraphView = new Class({
                         dots.push({
                             x: ring,
                             title: 'Value: ' + value,
-                            y: 200 * (parseInt(pos) / segments_count),
+                            y: 200 * ((parseInt(pos)) / segments_count),
                             shape: this.getAttributeShape(key),
                             style: 'rgba(' + this.getAttributeColor(key) + ',' + alpha + ')',
                             pos: pos 
