@@ -113,7 +113,7 @@ project.PageController = new Class({
 
     getSegmentsCount: function()
     {
-        return 10;
+        return 30;
     },
 
     getParametersFromUrl: function()
