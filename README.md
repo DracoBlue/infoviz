@@ -14,3 +14,8 @@ To import the data into your couchapp run
     thor tbm:target <couchdb>
 
 
+# TODO
+
+- query generation in attribute selector should order the attribute name before generating
+  - AW_CD.json is ok CD_AW is wrong!
+- img must be used instead of span-element to display the elements
