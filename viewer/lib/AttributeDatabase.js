@@ -29,6 +29,8 @@ project.AttributeDatabase.prototype = {
                 'name': 'AW'
             },{
                 'name': 'CD'
+            },{
+                'name': 'RING'
             }]);
         }, 1);
     }
