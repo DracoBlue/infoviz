@@ -31,6 +31,8 @@ project.AttributeSelector.prototype = {
 
     attribute_image_elements: [],
 
+    attribute_image_element_for_attribute_name: {},
+
     initialize: function(database, options)
     {
         var self = this;
@@ -50,24 +52,14 @@ project.AttributeSelector.prototype = {
                     'name': attribute.name
                 });
 
+                self.attribute_image_element_for_attribute_name[attribute.name] = image;
+
                 image.setUrl(self.options.image_url_generator_function(attribute.name));
 
                 image.toElement().getElement('div').addEvent('click', function(event)
                 {
                     event.stop();
-
-                    if (self.selected_attribute_image_element)
-                    {
-                        self.selected_attribute_image_element.removeSelection();
-                        self.selected_attribute_name = null;
-                    }
-
-                    self.selected_attribute_image_element = image;
-                    self.selected_attribute_name = attribute.name;
-                    image.addSelection();
-                    self.fireEvent('select', [
-                        attribute.name
-                    ]);
+                    self.select(attribute.name);
                 });
 
                 self.attribute_image_elements.push(image);
@@ -88,7 +80,34 @@ project.AttributeSelector.prototype = {
 
     getSelectedAttributeName: function()
     {
+        if (!this.selected_attribute_name)
+        {
+            throw new Error('Nothing selected, yet!');
+        }
         return this.selected_attribute_name;
+    },
+
+    select: function(attribute_name)
+    {
+        var image = this.attribute_image_element_for_attribute_name[attribute_name];
+        
+        if (!image)
+        {
+            throw new Error('The attribute: ' + attribute_name + ' is not a valid option');
+        }
+
+        if (this.selected_attribute_image_element)
+        {
+            this.selected_attribute_image_element.removeSelection();
+            this.selected_attribute_name = null;
+        }
+
+        this.selected_attribute_image_element = image;
+        this.selected_attribute_name = attribute_name;
+        image.addSelection();
+        this.fireEvent('select', [
+            attribute_name
+        ]);
     },
 
     toElement: function()
