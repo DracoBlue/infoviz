@@ -73,17 +73,25 @@ class TBM < Thor
     puts "#{program} #{args}"
   end
 
-  desc "attr FILE, IN_DIR OUT_DIR", "generate all attributes"
-  def attr(file, in_dir, out_dir = "./out/")
+  desc "attr FILE, IN_DIR OUT_DIR CONF ", "generate all attributes"
+  def attr(file, in_dir, out_dir = "./out/", config_file = "./config.json")
+    
+    conf = JSON.parse(File.read(config_file))['schichten']
+    
+    layers = {}
+    conf['layers'].each {|l| layers[l['name']] = l['id']}
+    
     
     sensors = (3..45) # eigentlich 6..46
     out_files = {}
     sensors.each do |s|
       out_files[s] = File.open("#{out_dir}/#{s+1}.json", 'w')
+      out_files[s].write("{") # open first JSON curly bracket
     end
     
     schichten = get_schichten_data(file)
-    #puts schichten
+    schichten = schichten.merge(schichten){|k, v|layers[v]}
+    #schichten.each {|k, v| puts "#{k} => #{v}"}
     
     pattern = /\d*Data_c.txt/
     files = Dir.new(in_dir).entries.select {|f| f[pattern]}  
@@ -104,6 +112,12 @@ class TBM < Thor
         end
       end 
     end
+    
+    #close brackets
+    sensors.each do |i|  
+      out_files[i].write("}")
+    end
+    
   end
 
 
