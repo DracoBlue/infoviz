@@ -21,29 +21,7 @@ class TBM < Thor
   desc 'schichten FILE', 'readsimports a csv file into a couchdb'
   def schichten(file)
     
-    data = {}
-    
-    FasterCSV.foreach(file, :col_sep => "\t", :headers => true) do |row|
-      if (row['Ring'] && row['Kartierung_Schicht'])
-        data[row['Ring']] = row['Kartierung_Schicht']
-      end
-    end
-    
-    schichten = []
-    current = {}
-    
-    data.keys.sort.each do |key|
-      if (data[key] != current[:name])
-        current = {
-          :name => data[key],
-          :start => key.to_i,
-          :end => key.to_i
-        }
-        schichten.push(current)
-      else
-        current[:end] = key.to_i
-      end
-    end
+    schichten = get_schichten(file)
 
     offset = schichten.first[:start]
     width = schichten.last[:end]-offset
@@ -87,6 +65,60 @@ class TBM < Thor
     
     puts "#{program} #{args}"
   end
+
+  desc "attr IN_DIR OUT_DIR", "generate all attributes"
+  def attr(in_dir, out_dir = ".")
+    
+    pattern = /\d*Data_c.txt/
+    files = Dir.new(in_dir).entries.select {|f| f[pattern]}  
+
+    files.each do |file|
+      FasterCSV.foreach("#{in_dir}/#{file}") do |row|
+        ring = row[2].to_i
+        json = {'gestein' => nil, 'value' => row[7], 'ring' => ring}.to_json
+        puts json
+      end 
+    end
+
+  end
+
+
+  private
+  def get_schichten_data(file)
+    data = {}
+    
+    FasterCSV.foreach(file, :col_sep => "\t", :headers => true) do |row|
+      if (row['Ring'] && row['Kartierung_Schicht'])
+        data[row['Ring']] = row['Kartierung_Schicht']
+      end
+    end
+    
+    return data
+  end
+  
+  def get_schichten(file)
+    
+    data = get_schichten_data(file)
+    
+    schichten = []
+    current = {}
+    
+    data.keys.sort.each do |key|
+      if (data[key] != current[:name])
+        current = {
+          :name => data[key],
+          :start => key.to_i,
+          :end => key.to_i
+        }
+        schichten.push(current)
+      else
+        current[:end] = key.to_i
+      end
+    end
+    
+    return schichten
+  end
+  
 
 end
 
