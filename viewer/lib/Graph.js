@@ -143,7 +143,7 @@ project.Graph.prototype = {
             return d ? "#eee" : "#000";
         }).anchor("left").add(pv.Label).visible(function(d)
         {
-            return d > 0 && d < 1;
+            return true;
         }).text(y.tickFormat);
 
         /* X-axis and ticks. */
@@ -152,7 +152,7 @@ project.Graph.prototype = {
             return d ? "#eee" : "#000";
         }).anchor("bottom").add(pv.Label).visible(function(d)
         {
-            return d > 0 && d < 100;
+            return true;
         }).text(x.tickFormat);
 
         /* The dot plot! */
