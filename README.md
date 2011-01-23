@@ -19,3 +19,4 @@ To import the data into your couchapp run
 - query generation in attribute selector should order the attribute name before generating
   - AW_CD.json is ok CD_AW is wrong!
 - img must be used instead of span-element to display the elements
+- the type of stone should set the color of the segment
