@@ -1,0 +1,13 @@
+{"schichten" : {
+    "filename" : "schichten.png",
+    "width" : 500,
+    "height" : 25,
+    "colors" : {
+      "Fanger (Störungszone)"               : "939393",
+      "Oberer Buntsandstein / so1-2 (Röt)"  : "E3C24D",
+      "Oberer Buntsandstein / so2 (Röt)"    : "C08829",
+      "Tertiär/Ton"                         : "778FBA",
+      "TERTIÄR / Ton mit Braunkohleflözen"  : "6CA193"
+    }
+  }
+}

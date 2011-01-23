@@ -36,4 +36,5 @@ if 1 == rest.length % 2
 
 #jetzt sind das immer Paare: (farbe, breite)
 for i in [((rest.length-2)/2)..0]
-  paint(ctx, '#'+rest[i*2], Number(rest[i*2 +1]))
+  color = '#'+rest[i*2]
+  paint(ctx, color, Number(rest[i*2 +1]))
