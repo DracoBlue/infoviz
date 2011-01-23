@@ -3,3 +3,32 @@
     margin: 5px;
     display: block;
 }
+
+#graph {
+    float:left;
+    width: 610px;
+}
+
+#slider {
+    clear:left;
+    float:left;
+    width: 610px;
+}
+
+#controls {
+    float:right;
+    width: 300px;
+    overflow-y:scroll;
+}
+
+
+
+ul.attribute_selector {
+	list-style-type: none;
+}
+
+ul.attribute_selector li {
+    display: block;
+	float: left;
+	margin: 5px;
+}
