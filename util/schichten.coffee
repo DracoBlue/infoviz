@@ -1,10 +1,7 @@
-# Aufruf sollte etwa so aussehen: 
-# schichten FILENAME BREITE HÖHE FARBE1 BIS_X1 FARBE2 BIS_X2 FARBE 3 
-# letzte Farbe (geht immer bis zum ende)
-#
 # Beispiel-Aufruf: 
 # coffee schichten.coffee test.png 500 100 FF0000 1 FFFF00 499 000FFF
 # => erzeugt ein Bild test.png 500x100 mit 1px links ROT, ganz viel GELB und rechts 1px BLAU
+# => letzte Farbe geht immer bis zum Ende
 
 Canvas = require 'Canvas'
 fs = require 'fs'
