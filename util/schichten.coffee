@@ -7,7 +7,7 @@ Canvas = require 'Canvas'
 fs = require 'fs'
 
 #console.log process.argv
-i = 2
+i = 0
 filename  = process.argv[i++] || 'test.png'
 width     = Number(process.argv[i++]) || 500
 height    = Number(process.argv[i++]) || 1
