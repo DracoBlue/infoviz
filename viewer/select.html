@@ -71,6 +71,9 @@
                         'onSuccess': function(response){
                             console.log(response);
                             graph.refresh(response);
+                        },
+                        'onFailure': function() {
+                            alert('Datei ' + 'data/' + first_attribute_name + '_' + second_attribute_name + '.json' + ' not found!');
                         }
                     }).get();
                 };
