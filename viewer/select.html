@@ -19,6 +19,8 @@
         </script>
         <script type="text/javascript" src="lib/AttributeSelector.js">
         </script>
+        <script type="text/javascript" src="lib/Graph.js">
+        </script>
         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
         <link rel="stylesheet" href="lib/screen.css" type="text/css" media="all" />
     </head>
@@ -26,12 +28,14 @@
         <div id="center">
             <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: auto; overflow-y: hidden">
             </div>
+            <div id="graph" class="ui-helper-clearfix" style="width:625px; height:325px;">
+            </div>
             asdas 
             <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: auto; overflow-y: hidden">
             </div>
         </div>
         <div id="center2">
-        <div id="graph">
+        <div id="graph2">
         </div>
         <div id="controls" class="ui-widget ui-widget-content" style="padding: 10px">
         </div>
@@ -56,6 +60,83 @@
                         'select': function(){
                             second_attribute_selector.regenerateUrls();
                             $('second_selector').grab(second_attribute_selector);
+
+                            $('graph').grab(graph);
+
+                            graph.refresh([{
+                                "gestein": "?",
+                                "x": 1,
+                                "y": 2
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 4,
+                                "y": 1
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 4,
+                                "y": 2
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 1
+                            }, {
+                                "gestein": "?",
+                                "x": 3,
+                                "y": 3
+                            }, {
+                                "gestein": "?",
+                                "x": 4,
+                                "y": 4
+                            }, {
+                                "gestein": "?",
+                                "x": 2,
+                                "y": 1
+                            }, {
+                                "gestein": "?",
+                                "x": 1,
+                                "y": 2
+                            }]);
+                            
                         }
                     }
                 });
@@ -78,10 +159,19 @@
                     }
                 });
                 
+                var graph = new project.Graph({});
+                
+//                $('graph').grab(graph);
+                
                 cattle_ui.ui('header', {
                     'text': 'Erstes Attribute'
                 }).toElement().inject($('first_selector'), 'before');
                 $('first_selector').adopt(first_attribute_selector);
+                
+                cattle_ui.ui('header', {
+                    'text': 'Graph'
+                }).toElement().inject($('graph'), 'before');
+                
                 cattle_ui.ui('header', {
                     'text': 'Zweites Attribute'
                 }).toElement().inject($('second_selector'), 'before');
