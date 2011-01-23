@@ -49,37 +49,61 @@ class TBM < Thor
   def image (file, config_file="config.json")
     conf = JSON.parse(File.read(config_file))['schichten']
     
+    layers = {}
+    conf['layers'].each {|l| layers[l['name']] = {'id' => l['id'], 'color' => l['color']}}
+    
+    
     s = schichten(file)
     stretch = conf['width'] / s['width']
     
     program = "coffee schichten.coffee"
     args = "#{conf['filename']} #{conf['width']} #{conf['height']} "
     
-    s['layers'].each do |layer|
-      if layer != s['layers'].last
-        args += "#{conf['colors'][layer['name']]} #{layer['end']*stretch} "
+    s['layers'].each do |l|
+      
+      layer = layers[l['name']]
+      
+      if l != s['layers'].last
+        args += "#{layer['color']} #{l['end']*stretch} "
       else
-        args += "#{conf['colors'][layer['name']]}"
+        args += "#{layer['color']}"
       end
     end
     
     puts "#{program} #{args}"
   end
 
-  desc "attr IN_DIR OUT_DIR", "generate all attributes"
-  def attr(in_dir, out_dir = ".")
+  desc "attr FILE, IN_DIR OUT_DIR", "generate all attributes"
+  def attr(file, in_dir, out_dir = "./out/")
+    
+    sensors = (3..45) # eigentlich 6..46
+    out_files = {}
+    sensors.each do |s|
+      out_files[s] = File.open("#{out_dir}/#{s+1}.json", 'w')
+    end
+    
+    schichten = get_schichten_data(file)
+    #puts schichten
     
     pattern = /\d*Data_c.txt/
     files = Dir.new(in_dir).entries.select {|f| f[pattern]}  
 
     files.each do |file|
+      current = {}
       FasterCSV.foreach("#{in_dir}/#{file}") do |row|
         ring = row[2].to_i
-        json = {'gestein' => nil, 'value' => row[7], 'ring' => ring}.to_json
-        puts json
+        if (current[:c] != ring)
+          current[:c] = ring
+          current[:g] = schichten[ring]
+        end
+        
+        sensors.each do |i|  
+          current[:v] = row[i].to_f
+          json = current.to_json
+          out_files[i].write("#{json},")
+        end
       end 
     end
-
   end
 
 
@@ -89,7 +113,7 @@ class TBM < Thor
     
     FasterCSV.foreach(file, :col_sep => "\t", :headers => true) do |row|
       if (row['Ring'] && row['Kartierung_Schicht'])
-        data[row['Ring']] = row['Kartierung_Schicht']
+        data[row['Ring'].to_i] = row['Kartierung_Schicht']
       end
     end
     

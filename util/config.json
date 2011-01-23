@@ -1,13 +1,16 @@
-{"schichten" : {
+{
+  "schichten" : 
+  {
     "filename" : "schichten.png",
     "width" : 500,
     "height" : 25,
-    "colors" : {
-      "Fanger (Störungszone)"               : "939393",
-      "Oberer Buntsandstein / so1-2 (Röt)"  : "E3C24D",
-      "Oberer Buntsandstein / so2 (Röt)"    : "C08829",
-      "Tertiär/Ton"                         : "778FBA",
-      "TERTIÄR / Ton mit Braunkohleflözen"  : "6CA193"
-    }
+    "layers" : 
+    [
+      {"id" : 1, "name" : "Fanger (Störungszone)",              "color" :"939393"},
+      {"id" : 2, "name" : "Oberer Buntsandstein / so1-2 (Röt)", "color" :"E3C24D"},
+      {"id" : 3, "name" : "Oberer Buntsandstein / so2 (Röt)",   "color" :"C08829"},
+      {"id" : 4, "name" : "Tertiär/Ton",                        "color" :"778FBA"},
+      {"id" : 5, "name" : "TERTIÄR / Ton mit Braunkohleflözen", "color" :"6CA193"}    
+    ]
   }
 }
