@@ -89,4 +89,33 @@ puts('Max: ' + JSON.stringify(f.max))
 puts('Median: ' + f.median)
 
 
+min = f.min.v
+inc = (f.max.v - f.min.v) / 100.0 
+
+between = (attr, min, max) ->
+  between_func = (obj) ->
+    min <= obj[attr] <= max
+
+filter_by_attr = (attr, val) ->
+  '''
+  attribute needs to equal (==) value
+  '''
+  filter = (obj) ->
+    obj[attr] == val
+  
+
+
+for step in [0..99]
+  from = step * inc + min
+  to = from + step
+  x = _.filter(ohne_extreme, between('v', from, to))
+  #puts "#{from} .. #{to} -> #{x.length}"
+
+  per_color = {}
+  
+  for color in [1..5]
+    per_color[color] = _.filter(x, filter_by_attr('g',color)).length
+
+  puts "#{from} .. #{to} -> #{x.length} (#{per_color[1]}, #{per_color[2]}, #{per_color[3]}, #{per_color[4]}, #{per_color[5]})"
+
 puts('done')
