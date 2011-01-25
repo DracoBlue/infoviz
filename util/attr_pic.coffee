@@ -89,6 +89,4 @@ puts('Max: ' + JSON.stringify(f.max))
 puts('Median: ' + f.median)
 
 
-for [1..100]
-
 puts('done')
