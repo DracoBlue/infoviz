@@ -86,7 +86,7 @@ class TBM < Thor
     out_files = {}
     sensors.each do |s|
       out_files[s] = File.open("#{out_dir}/#{s+1}.json", 'w')
-      out_files[s].write("{") # open first JSON curly bracket
+      out_files[s].write('{"values" : [') # open JSON
     end
     
     schichten = get_schichten_data(file)
@@ -95,6 +95,8 @@ class TBM < Thor
     
     pattern = /\d*Data_c.txt/
     files = Dir.new(in_dir).entries.select {|f| f[pattern]}  
+
+    seperator = ''
 
     files.each do |file|
       current = {}
@@ -108,14 +110,17 @@ class TBM < Thor
         sensors.each do |i|  
           current[:v] = row[i].to_f
           json = current.to_json
-          out_files[i].write("#{json},")
+          out_files[i].write("#{seperator}#{json}\n")
         end
+
+        seperator = ','
+
       end 
     end
     
     #close brackets
     sensors.each do |i|  
-      out_files[i].write("}")
+      out_files[i].write("]}") # ending JSON
     end
     
   end
