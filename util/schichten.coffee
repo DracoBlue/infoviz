@@ -6,7 +6,7 @@
 Canvas = require 'Canvas'
 fs = require 'fs'
 
-#console.log process.argv
+#puts process.argv
 i = 0
 filename  = process.argv[i++] || 'test.png'
 width     = Number(process.argv[i++]) || 500
@@ -18,7 +18,7 @@ rest = process.argv[i...process.argv.length]
 canvas = new Canvas(width,height)
 ctx  = canvas.getContext('2d')
 
-out = fs.createWriteStream(__dirname + '/' + filename)
+out = fs.createWriteStream("#{__dirname}/#{filename}")
 stream = canvas.createPNGStream();
 
 paint = (ctx, color, width) ->
