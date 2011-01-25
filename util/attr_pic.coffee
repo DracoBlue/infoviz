@@ -2,7 +2,7 @@ Canvas = require 'Canvas'
 fs = require 'fs'
 _ = (require 'underscore')._ # this problem is fixed in underscore.js 1.1.3
 
-#console.log process.argv
+#puts process.argv
 i = 0
 filename  = process.argv[i++]
 
@@ -57,8 +57,8 @@ median = (sorted_arr) ->
     return [val_a,val_b]
 
 
-console.log("Fehler in median") unless 2.5 == median([1,2,3,4])
-console.log("Fehler in median") unless 3 == median([1,2,3,4,5])
+puts("Fehler in median") unless 2.5 == median([1,2,3,4])
+puts("Fehler in median") unless 3 == median([1,2,3,4,5])
 
 features = (arr) ->
   n = arr.length
@@ -70,12 +70,12 @@ features = (arr) ->
   }
 
 f = features(sorted)
-#console.log('count: ' + f.n)
-#console.log('Min: ' + JSON.stringify(f.min))
-#console.log('Max: ' + JSON.stringify(f.max))
-#console.log('Median: ' + f.median)
+#puts('count: ' + f.n)
+#puts('Min: ' + JSON.stringify(f.min))
+#puts('Max: ' + JSON.stringify(f.max))
+#puts('Median: ' + f.median)
 
-console.log('entfernen der unteren und oberen 5% quantile')
+puts('entfernen der unteren und oberen 5% quantile')
 alpha = 0.05
 k1 = Math.ceil(f.n * alpha)
 k2 = Math.ceil(f.n * (1 - alpha) )
@@ -83,9 +83,12 @@ k2 = Math.ceil(f.n * (1 - alpha) )
 ohne_extreme = sorted[k1..k2]
 
 f = features(ohne_extreme)
-console.log('count: ' + f.n)
-console.log('Min: ' + JSON.stringify(f.min))
-console.log('Max: ' + JSON.stringify(f.max))
-console.log('Median: ' + f.median)
+puts('count: ' + f.n)
+puts('Min: ' + JSON.stringify(f.min))
+puts('Max: ' + JSON.stringify(f.max))
+puts('Median: ' + f.median)
 
-console.log('done')
+
+for [1..100]
+
+puts('done')
