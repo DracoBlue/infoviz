@@ -4,9 +4,17 @@ _ = (require 'underscore')._ # this problem is fixed in underscore.js 1.1.3
 
 #puts process.argv
 i = 0
-filename  = process.argv[i++]
+val_file =  process.argv[i++]
+img_file =  process.argv[i++] || "#{val_file}.png"
+conf_file = process.argv[i++] || 'config.json'
 
-json = fs.readFileSync(filename, 'utf8')
+
+config = JSON.parse(fs.readFileSync(conf_file, 'utf8'))
+colors = []
+_.each(config.schichten.layers, (obj) -> colors[obj.id-1] = obj.color) 
+
+
+json = fs.readFileSync(val_file, 'utf8')
 values = JSON.parse(json)['values']
 
 
@@ -18,23 +26,10 @@ test = [
 ]
 
 
-# currying
-extract = (attr) ->
-  extract_attr = (v) ->
-    v[attr]
-  
-sort_func = (num) ->
-  return num
-
 sort_by_attr = (attr) ->
   obj_sort_func = (obj) ->
     return obj[attr]
 
-
-
-
-#arr = _.map(values,extract('v'))
-#sorted = _.sortBy arr, sort_func
 
 sorted = _.sortBy values, sort_by_attr('v')
 
@@ -69,13 +64,10 @@ features = (arr) ->
     median : median(arr)
   }
 
-f = features(sorted)
-#puts('count: ' + f.n)
-#puts('Min: ' + JSON.stringify(f.min))
-#puts('Max: ' + JSON.stringify(f.max))
-#puts('Median: ' + f.median)
 
-puts('entfernen der unteren und oberen 5% quantile')
+# entfernen der unteren und oberen 5% quantile 
+
+f = features(sorted)
 alpha = 0.05
 k1 = Math.ceil(f.n * alpha)
 k2 = Math.ceil(f.n * (1 - alpha) )
@@ -83,10 +75,10 @@ k2 = Math.ceil(f.n * (1 - alpha) )
 ohne_extreme = sorted[k1..k2]
 
 f = features(ohne_extreme)
-puts('count: ' + f.n)
-puts('Min: ' + JSON.stringify(f.min))
-puts('Max: ' + JSON.stringify(f.max))
-puts('Median: ' + f.median)
+#puts('count: ' + f.n)
+#puts('Min: ' + JSON.stringify(f.min))
+#puts('Max: ' + JSON.stringify(f.max))
+#puts('Median: ' + f.median)
 
 
 min = f.min.v
@@ -105,17 +97,64 @@ filter_by_attr = (attr, val) ->
   
 
 
+
+percentify = (arr) ->
+  sum = (memo, num) -> memo + num
+  total = _.reduce(arr, sum, 0)
+
+  percent = (x) ->
+    return 0 if 0 == total
+    Math.round( x/total * 100 )
+    
+  _.map(arr, percent)
+
+
+puts "Fehler bei percentify" unless _.isEqual([10,20,30,40] , percentify([1,2,3,4]))
+
+per_color = [0..99][0..4]
+
 for step in [0..99]
   from = step * inc + min
   to = from + step
   x = _.filter(ohne_extreme, between('v', from, to))
   #puts "#{from} .. #{to} -> #{x.length}"
 
-  per_color = {}
-  
-  for color in [1..5]
-    per_color[color] = _.filter(x, filter_by_attr('g',color)).length
+  per_color[step] = [0,0,0,0,0]
+  for v in x
+    per_color[step][v.g-1] += 1
 
-  puts "#{from} .. #{to} -> #{x.length} (#{per_color[1]}, #{per_color[2]}, #{per_color[3]}, #{per_color[4]}, #{per_color[5]})"
+  per_color[step] = percentify(per_color[step])
+  #puts "#{from} .. #{to} -> #{x.length} (#{per_color[step][0]}, #{per_color[step][1]}, #{per_color[step][2]}, #{per_color[step][3]}, #{per_color[step][4]})"
 
-puts('done')
+
+############ ...
+##
+## und jetzt wird alles gezeichnet...
+##
+############ ...
+
+canvas = new Canvas(100,100)
+ctx  = canvas.getContext('2d')
+out = fs.createWriteStream("#{__dirname}/#{img_file}")
+stream = canvas.createPNGStream();
+stream.on 'data', (chunk) -> out.write(chunk)
+
+
+draw = (arr) ->  
+  i = 0
+  for row in arr
+    j = 0
+    start = 0
+    for schicht in row
+      ctx.fillStyle = "##{colors[j]}"
+      ctx.strokeStyle = "##{colors[j]}"
+      ctx.fillRect(start,99-i,schicht,1)
+      start += schicht
+      j++
+    i++
+  ctx.stroke
+
+
+draw(per_color)
+
+# puts('done')
