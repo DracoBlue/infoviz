@@ -65,11 +65,11 @@ features = (arr) ->
   }
 
 
-# entfernen der unteren und oberen 5% quantile 
-
+# entfernen der obersten 5% quantile 
 f = features(sorted)
 alpha = 0.05
-k1 = Math.ceil(f.n * alpha)
+#k1 = Math.ceil(f.n * alpha)
+k1 = Math.ceil(0)
 k2 = Math.ceil(f.n * (1 - alpha) )
 
 ohne_extreme = sorted[k1..k2]
