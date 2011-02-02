@@ -10,7 +10,7 @@ project.Graph.prototype = {
 
     options: {
         'segments_x': 6,
-        'segments_y': 6
+        'segments_y': 12
     },
 
     initialize: function(options)
