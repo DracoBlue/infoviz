@@ -20,6 +20,8 @@
 
 ul.attribute_selector {
 	list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 ul.attribute_selector li {
