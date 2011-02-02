@@ -30,8 +30,10 @@ project.AttributePreviewImageElement.prototype = {
         var text = this.dom_element.get('text');
 
         this.dom_element.empty();
-        this.image_element = new Element('div', {
-            'style': 'width: 100px; height: 100px'
+        this.image_element = new Element('img', {
+            'src': '#',
+            'title': this.options.caption,
+            'style': 'width: 100px; height: 100px; margin: 10px'
         });
         this.dom_element.grab(this.image_element);
         cattle_ui.util.applyHoverEffect(this.dom_element);
@@ -39,7 +41,7 @@ project.AttributePreviewImageElement.prototype = {
 
     setUrl: function(url)
     {
-        this.image_element.set('text', url);
+        this.image_element.set('src', url);
     },
 
     removeSelection: function()
