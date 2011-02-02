@@ -49,14 +49,15 @@ project.AttributeSelector.prototype = {
             attributes.each(function(attribute)
             {
                 var image = new project.AttributePreviewImageElement(null, {
-                    'name': attribute.name
+                    'name': attribute.name,
+                    'caption': attribute.caption
                 });
 
                 self.attribute_image_element_for_attribute_name[attribute.name] = image;
 
                 image.setUrl(self.options.image_url_generator_function(attribute.name));
 
-                image.toElement().getElement('div').addEvent('click', function(event)
+                image.toElement().getElement('img').addEvent('click', function(event)
                 {
                     event.stop();
                     self.select(attribute.name);
