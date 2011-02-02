@@ -26,12 +26,11 @@
     </head>
     <body>
         <div id="center">
-            <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: auto; overflow-y: hidden">
+            <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 140px;">
             </div>
             <div id="graph" class="ui-helper-clearfix" style="width:625px; height:325px;">
             </div>
-            asdas 
-            <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: auto; overflow-y: hidden">
+            <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 140px;">
             </div>
         </div>
         <div id="center2">
@@ -80,7 +79,7 @@
                 
                 var first_attribute_selector = new project.AttributeSelector(attribute_database, {
                     'image_url_generator_function': function(attribute_name){
-                        return '' + attribute_name + '.png';
+                        return 'preview/' + attribute_name + '.png';
                     },
                     'events': {
                         'select': function(){
@@ -101,7 +100,8 @@
                         catch (e) {
                         }
                         
-                        return first_attribute_name + '_' + attribute_name + '.png';
+                        return 'preview/' + attribute_name + '.png';
+//                        return first_attribute_name + '_' + attribute_name + '.png';
                     },
                     'events': {
                         'select': function(){
