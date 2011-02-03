@@ -26,11 +26,11 @@
     </head>
     <body>
         <div id="center">
-            <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 140px;">
+            <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 150px;">
             </div>
             <div id="graph" class="ui-helper-clearfix" style="width:625px; height:325px;">
             </div>
-            <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 140px;">
+            <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 150px;">
             </div>
         </div>
         <div id="center2">
@@ -54,7 +54,7 @@
                 
                 var refresh_graph_trigger = function(){
                     var first_attribute_name = first_attribute_selector.getSelectedAttributeName();
-                    var second_attribute_name = 'RING';
+                    var second_attribute_name = 'C';
                     
                     try {
                         second_attribute_name = second_attribute_selector.getSelectedAttributeName();
