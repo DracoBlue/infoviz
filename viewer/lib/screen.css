@@ -17,7 +17,6 @@
 }
 
 
-
 ul.attribute_selector {
 	list-style-type: none;
     margin: 0;
@@ -28,4 +27,30 @@ ul.attribute_selector li {
     display: block;
 	float: left;
 	margin: 5px;
+}
+
+#first_selector, #second_selector {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 150px;
+}
+
+#graph_and_legend {
+    height: 325px;
+}
+#graph {
+    width:625px;
+    height:325px;
+    float: left
+}
+
+#layers_legend {
+    width: 375px;
+    height: 325px;
+    float: left;
+}
+
+ul.layers_legend li {
+    white-space:nowrap;
+    padding: 0.1em 0.5em;
 }

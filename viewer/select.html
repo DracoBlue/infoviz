@@ -19,6 +19,8 @@
         </script>
         <script type="text/javascript" src="lib/AttributeSelector.js">
         </script>
+        <script type="text/javascript" src="lib/LayersLegend.js">
+        </script>
         <script type="text/javascript" src="lib/Graph.js">
         </script>
         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
@@ -26,11 +28,15 @@
     </head>
     <body>
         <div id="center">
-            <div id="first_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 150px;">
+            <div id="first_selector" class="ui-helper-clearfix">
             </div>
-            <div id="graph" class="ui-helper-clearfix" style="width:625px; height:325px;">
+            <div id="graph_and_legend" class="ui-helper-clearfix">
+                <div id="graph" class="ui-helper-clearfix">
+                </div>
+                <div id="layers_legend" class="ui-helper-clearfix">
+                </div>
             </div>
-            <div id="second_selector" class="ui-helper-clearfix" style="overflow-x: hidden; overflow-y: scroll; height: 150px;">
+            <div id="second_selector" class="ui-helper-clearfix">
             </div>
         </div>
         <div id="center2">
@@ -68,14 +74,18 @@
                     new Request.JSON({
                         'url': 'data/' + first_attribute_name + '_' + second_attribute_name + '.json',
                         'onSuccess': function(response){
-                            console.log(response);
-                            graph.refresh(response);
+                            attribute_database.retrieveLayers(function(layers) {
+                                graph.refresh(response, layers);
+                            });
                         },
                         'onFailure': function() {
                             alert('Datei ' + 'data/' + first_attribute_name + '_' + second_attribute_name + '.json' + ' not found!');
                         }
                     }).get();
                 };
+
+                var layers_legend = new project.LayersLegend(attribute_database, {
+                });
                 
                 var first_attribute_selector = new project.AttributeSelector(attribute_database, {
                     'image_url_generator_function': function(attribute_name){
@@ -120,9 +130,16 @@
                 $('first_selector').adopt(first_attribute_selector);
                 
                 cattle_ui.ui('header', {
-                    'text': 'Graph'
-                }).toElement().inject($('graph'), 'before');
-                
+                    'text': 'Graph',
+                    'size': 4
+                }).toElement().inject($('graph_and_legend'), 'before');
+
+                cattle_ui.ui('header', {
+                    'text': 'Legende'
+                }).toElement().inject($('layers_legend'));
+                $('layers_legend').grab(layers_legend);
+
+
                 cattle_ui.ui('header', {
                     'text': 'Zweites Attribute'
                 }).toElement().inject($('second_selector'), 'before');
