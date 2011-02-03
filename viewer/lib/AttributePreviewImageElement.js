@@ -33,9 +33,15 @@ project.AttributePreviewImageElement.prototype = {
         this.image_element = new Element('img', {
             'src': '#',
             'title': this.options.caption,
-            'style': 'width: 100px; height: 100px; margin: 10px'
+            'style': 'width: 100px; height: 100px; margin: 10px 10px 0 10px'
         });
         this.dom_element.grab(this.image_element);
+        this.label_element = new Element('span', {
+            'text': '[' + this.options.name + ']' + this.options.caption,
+            'style': 'width: 100px; display: block; overflow: hidden; white-space: nowrap; margin: 0 10px'
+        });
+        this.dom_element.grab(this.label_element);
+ 
         cattle_ui.util.applyHoverEffect(this.dom_element);
     },
 
