@@ -59,11 +59,11 @@
                 var attribute_database = new project.AttributeDatabase();
                 
                 var refresh_graph_trigger = function(){
-                    var first_attribute_name = first_attribute_selector.getSelectedAttributeName();
-                    var second_attribute_name = 'C';
+                    var first_attribute_id = first_attribute_selector.getSelectedAttributeId();
+                    var second_attribute_id = 3;
                     
                     try {
-                        second_attribute_name = second_attribute_selector.getSelectedAttributeName();
+                        second_attribute_id = second_attribute_selector.getSelectedAttributeId();
                     } 
                     catch (e) {
                     }
@@ -72,14 +72,14 @@
                     $('graph').grab(graph);
                     
                     new Request.JSON({
-                        'url': 'data/' + first_attribute_name + '_' + second_attribute_name + '.json',
+                        'url': 'data/' + first_attribute_id + '_' + second_attribute_id + '.json',
                         'onSuccess': function(response){
                             attribute_database.retrieveLayers(function(layers) {
-                                graph.refresh(response, layers);
+                                graph.refresh(response.values, layers);
                             });
                         },
                         'onFailure': function() {
-                            alert('Datei ' + 'data/' + first_attribute_name + '_' + second_attribute_name + '.json' + ' not found!');
+                            alert('Datei ' + 'data/' + first_attribute_id + '_' + second_attribute_id + '.json' + ' not found!');
                         }
                     }).get();
                 };
@@ -102,10 +102,10 @@
                 
                 var second_attribute_selector = new project.AttributeSelector(attribute_database, {
                     'image_url_generator_function': function(attribute_name){
-                        var first_attribute_name = null;
+                        var first_attribute_id = null;
                         
                         try {
-                            first_attribute_name = first_attribute_selector.getSelectedAttributeName();
+                            first_attribute_id = first_attribute_selector.getSelectedAttributeId();
                         } 
                         catch (e) {
                         }

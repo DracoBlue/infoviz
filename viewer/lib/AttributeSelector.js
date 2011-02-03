@@ -28,6 +28,7 @@ project.AttributeSelector.prototype = {
 
     selected_attribute_image_element: null,
     selected_attribute_name: null,
+    selected_attribute_id: null,
 
     attribute_image_elements: [],
 
@@ -50,6 +51,7 @@ project.AttributeSelector.prototype = {
             {
                 var image = new project.AttributePreviewImageElement(null, {
                     'name': attribute.name,
+                    'id': attribute.id,
                     'caption': attribute.caption
                 });
 
@@ -75,7 +77,7 @@ project.AttributeSelector.prototype = {
         var self = this;
         this.attribute_image_elements.each(function(image_element)
         {
-            image_element.setUrl(self.options.image_url_generator_function(image_element.getName()));
+            image_element.setUrl(self.options.image_url_generator_function(image_element.getName(), image_element.getId()));
         });
     },
 
@@ -86,6 +88,15 @@ project.AttributeSelector.prototype = {
             throw new Error('Nothing selected, yet!');
         }
         return this.selected_attribute_name;
+    },
+
+    getSelectedAttributeId: function()
+    {
+        if (!this.selected_attribute_id)
+        {
+            throw new Error('Nothing selected, yet!');
+        }
+        return this.selected_attribute_id;
     },
 
     select: function(attribute_name)
@@ -105,6 +116,7 @@ project.AttributeSelector.prototype = {
 
         this.selected_attribute_image_element = image;
         this.selected_attribute_name = attribute_name;
+        this.selected_attribute_id = image.getId();
         image.addSelection();
         this.fireEvent('select', [
             attribute_name

@@ -63,6 +63,11 @@ project.AttributePreviewImageElement.prototype = {
     getName: function()
     {
         return this.options.name;
+    },
+    
+    getId: function()
+    {
+        return this.options.id;
     }
 
 };

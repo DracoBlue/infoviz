@@ -9,8 +9,8 @@ project.Graph.prototype = {
     ],
 
     options: {
-        'segments_x': 6,
-        'segments_y': 12
+        'segments_x': 24,
+        'segments_y': 48
     },
 
     initialize: function(options)
@@ -25,7 +25,7 @@ project.Graph.prototype = {
         return this.dom_element;
     },
 
-    createDotsForData: function(data)
+    createDotsForData: function(data, layers)
     {
         var dots = [];
 
@@ -33,7 +33,13 @@ project.Graph.prototype = {
         {
             return [[0,0,0,0], dots];
         }
-        
+
+        var layer_id_to_color_map = {};
+
+        layers.each(function(value, key) {
+            layer_id_to_color_map[value.id] = '#' + value.color;
+        });
+
         /*
          * First of all, let's find out what is the minimum x,y and maximum x,y
          */
@@ -56,6 +62,7 @@ project.Graph.prototype = {
         
         var segment_size_x = ((max_x - min_x) / this.options.segments_x);
         var segment_size_y = ((max_y - min_y) / this.options.segments_y);
+        var segment_gestein = {};
         
         console.log('segement_size', segment_size_x, segment_size_y);
         /*
@@ -71,6 +78,8 @@ project.Graph.prototype = {
             
             segment_value[segment_x] = segment_value[segment_x] || {};
             segment_value[segment_x][segment_y] = (segment_value[segment_x][segment_y] || 0) + 1;
+            segment_gestein[segment_x] = segment_gestein[segment_x] || {};
+            segment_gestein[segment_x][segment_y] = data[i].g;
         }
         
         /*
@@ -90,7 +99,7 @@ project.Graph.prototype = {
                         title: 'Value: ' +  alpha,
                         y: y * segment_size_y + min_y,
                         shape: 'square',
-                        style: 'rgba(255,0,0,' + alpha + ')',
+                        style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
                         pos: segment_value[x][y]
                     });
                 }
@@ -102,11 +111,11 @@ project.Graph.prototype = {
         return [[min_x, max_x, min_y, max_y], dots, [segment_size_x, segment_size_y]];
     },
 
-    refresh: function(data)
+    refresh: function(data, layers)
     {
         var self = this;
 
-        var graph_data = this.createDotsForData(data);
+        var graph_data = this.createDotsForData(data, layers);
 
         var min_x = graph_data[0][0];
         var max_x = graph_data[0][1];
