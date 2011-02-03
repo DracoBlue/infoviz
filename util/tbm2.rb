@@ -85,7 +85,7 @@ class TBM < Thor
     conf['layers'].each {|l| layers[l['name']] = l['id']}
     
     
-    sensors = (3..45) # eigentlich 6..46
+    sensors = (2..45) # eigentlich 6..46
     out_files = {}
     sensors.each do |s|
       out_files[s] = File.open("#{out_dir}/#{s+1}.json", 'w')
