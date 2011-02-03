@@ -45,8 +45,10 @@ class TBM < Thor
   end
 
 
-  desc "image DATA_FILE [CONFIG_FILE]", "erzeugt ein Bild der Schichten"
+  desc "image EINSATZ_FILE [CONFIG_FILE]", "erzeugt ein Bild der Schichten"
   def image (file, config_file="config.json")
+    
+    puts "use config file: #{config_file}"
     conf = JSON.parse(File.read(config_file))['schichten']
     
     layers = {}
@@ -70,6 +72,7 @@ class TBM < Thor
       end
     end
     
+    puts "please run the following command"
     puts "#{program} #{args}"
   end
 
