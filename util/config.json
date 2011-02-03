@@ -6,11 +6,11 @@
     "height" : 25,
     "layers" : 
     [
-      {"id" : 1, "name" : "Fanger (Störungszone)",              "color" :"939393"},
-      {"id" : 2, "name" : "Oberer Buntsandstein / so1-2 (Röt)", "color" :"E3C24D"},
-      {"id" : 3, "name" : "Oberer Buntsandstein / so2 (Röt)",   "color" :"C08829"},
-      {"id" : 4, "name" : "Tertiär/Ton",                        "color" :"778FBA"},
-      {"id" : 5, "name" : "TERTIÄR / Ton mit Braunkohleflözen", "color" :"6CA193"}    
+      {"id" : 1, "name" : "Fanger (StÃ¶rungszone)",              "color" :"939393"},
+      {"id" : 2, "name" : "Oberer Buntsandstein / so1-2 (RÃ¶t)", "color" :"E3C24D"},
+      {"id" : 3, "name" : "Oberer Buntsandstein / so2 (RÃ¶t)",   "color" :"C08829"},
+      {"id" : 4, "name" : "TertiÃ¤r/Ton",                        "color" :"778FBA"},
+      {"id" : 5, "name" : "TERTIÃ„R / Ton mit BraunkohleflÃ¶zen", "color" :"6CA193"}    
     ]
   },
   "zuordnung" :
@@ -18,13 +18,13 @@
       {
         "number": "1",
         "en": null,
-        "de": "Zähler, ohne Nullstellen",
+        "de": "ZÃ¤hler, ohne Nullstellen",
         "id": "New_Counter"
       },
       {
         "number": "2",
         "en": null,
-        "de": "Zähler, Position im Originaldatensatz",
+        "de": "ZÃ¤hler, Position im Originaldatensatz",
         "id": "Counter"
       },
       {
@@ -72,7 +72,7 @@
       {
         "number": "10",
         "en": "Thrust - back-up force",
-        "de": "Zugkraft Nachläufer",
+        "de": "Zugkraft NachlÃ¤ufer",
         "id": "AV"
       },
       {
@@ -138,7 +138,7 @@
       {
         "number": "21",
         "en": "Mortar - Volume all lines",
-        "de": "Mörtelvolumen Total",
+        "de": "MÃ¶rtelvolumen Total",
         "id": "BW"
       },
       {
@@ -174,67 +174,67 @@
       {
         "number": "27",
         "en": "Earth pressure 6 screw conv. front",
-        "de": "Erddrucksensor 6 Förderschnecke vorne",
+        "de": "Erddrucksensor 6 FÃ¶rderschnecke vorne",
         "id": "CC"
       },
       {
         "number": "28",
         "en": "Earth pressure 7 screw conv. rear",
-        "de": "Erddrucksensor 7 Förderschnecke hinten",
+        "de": "Erddrucksensor 7 FÃ¶rderschnecke hinten",
         "id": "CD"
       },
       {
         "number": "29",
         "en": "Screw conveyor pressure",
-        "de": "Druck Antrieb Förderschnecke",
+        "de": "Druck Antrieb FÃ¶rderschnecke",
         "id": "CE"
       },
       {
         "number": "30",
         "en": "Screw conveyor speed",
-        "de": "Drehzahl Förderschnecke",
+        "de": "Drehzahl FÃ¶rderschnecke",
         "id": "CF"
       },
       {
         "number": "31",
         "en": "Screw conveyor torque",
-        "de": "Drehmoment Förderschnecke",
+        "de": "Drehmoment FÃ¶rderschnecke",
         "id": "CG"
       },
       {
         "number": "32",
         "en": "Conv. C2 theoretical weight belt weigher",
-        "de": "Bandwaage Förderband C2 theoretisch ",
+        "de": "Bandwaage FÃ¶rderband C2 theoretisch ",
         "id": "CH"
       },
       {
         "number": "33",
         "en": "Conv. C2 actual weight belt weigher",
-        "de": "Bandwaage Förderband C2 effektiv",
+        "de": "Bandwaage FÃ¶rderband C2 effektiv",
         "id": "CI"
       },
       {
         "number": "34",
         "en": "Conv. C2 belt weigher weight eff./theo.",
-        "de": "Bandwaage Förderband C2 Eff./Theo.",
+        "de": "Bandwaage FÃ¶rderband C2 Eff./Theo.",
         "id": "CJ"
       },
       {
         "number": "35",
         "en": "Conv. C2 theo. weight volume scanner",
-        "de": "Volumenscanner Förderband C2 theoretisch ",
+        "de": "Volumenscanner FÃ¶rderband C2 theoretisch ",
         "id": "CT"
       },
       {
         "number": "36",
         "en": "Conv. C2 actual weight volume scanner",
-        "de": "Volumenscanner Förderband C2 effektiv",
+        "de": "Volumenscanner FÃ¶rderband C2 effektiv",
         "id": "CU"
       },
       {
         "number": "37",
         "en": "Conv. C2 volume scanner weight eff./the.",
-        "de": "Volumenscanner Förderband C2 Eff./Theo.",
+        "de": "Volumenscanner FÃ¶rderband C2 Eff./Theo.",
         "id": "CV"
       },
       {
@@ -282,13 +282,13 @@
       {
         "number": "45",
         "en": "Conv. C2 weight belt weigher density",
-        "de": "Bandwaage Förderband C2 spezifisches Gewicht",
+        "de": "Bandwaage FÃ¶rderband C2 spezifisches Gewicht",
         "id": "DU"
       },
       {
         "number": "46",
         "en": "Conv. C2 weight volume scanner density",
-        "de": "Bandwaage Förderband C2 spezifisches Gewicht",
+        "de": "Bandwaage FÃ¶rderband C2 spezifisches Gewicht",
         "id": "DV"
       }
     ]
