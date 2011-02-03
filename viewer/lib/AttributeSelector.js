@@ -65,7 +65,7 @@ project.AttributeSelector.prototype = {
 
                 self.attribute_image_elements.push(image);
 
-                self.dom_element.grab(new Element('li').grab(image));
+                self.dom_element.grab(image);
             });
         });
     },
