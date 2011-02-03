@@ -12,5 +12,284 @@
       {"id" : 4, "name" : "Tertiär/Ton",                        "color" :"778FBA"},
       {"id" : 5, "name" : "TERTIÄR / Ton mit Braunkohleflözen", "color" :"6CA193"}    
     ]
-  }
+  },
+  "zuordnung" :
+    [
+      {
+        "number": "1",
+        "en": null,
+        "de": "Zähler, ohne Nullstellen",
+        "id": "New_Counter"
+      },
+      {
+        "number": "2",
+        "en": null,
+        "de": "Zähler, Position im Originaldatensatz",
+        "id": "Counter"
+      },
+      {
+        "number": "3",
+        "en": "Ring number",
+        "de": "Ring Nr.",
+        "id": "C"
+      },
+      {
+        "number": "4",
+        "en": "Cutter head - torque",
+        "de": "Bohrkopfdrehmoment",
+        "id": "AD"
+      },
+      {
+        "number": "5",
+        "en": "Cutter head - speed",
+        "de": "Bohrkopfdrehzahl",
+        "id": "AE"
+      },
+      {
+        "number": "6",
+        "en": "Cutter head - Angular position",
+        "de": "Bohrkopfwinkelposition",
+        "id": "AF"
+      },
+      {
+        "number": "7",
+        "en": "Cutter head - Direction 0=off 1=cw- 2=ccw",
+        "de": "BK Drehrichtung 0=aus 1=CW 2=CWW",
+        "id": "AG"
+      },
+      {
+        "number": "8",
+        "en": "Cutter head - power",
+        "de": "Bohrkpofantriebsleistung",
+        "id": "AH"
+      },
+      {
+        "number": "9",
+        "en": "Thrust - advance speed",
+        "de": "Vorschubgeschwindigkeit",
+        "id": "AU"
+      },
+      {
+        "number": "10",
+        "en": "Thrust - back-up force",
+        "de": "Zugkraft Nachläufer",
+        "id": "AV"
+      },
+      {
+        "number": "11",
+        "en": "Thrust - Top sector pressure",
+        "de": "Vorschubdruck oberer Sektor",
+        "id": "AW"
+      },
+      {
+        "number": "12",
+        "en": "Thrust - Right sector pressure",
+        "de": "Vorschubdruck rechter Sektor in Bohrrichtung",
+        "id": "AX"
+      },
+      {
+        "number": "13",
+        "en": "Thrust - Bottom sector pressure",
+        "de": "Vorschubdruck unterer Sektor",
+        "id": "AY"
+      },
+      {
+        "number": "14",
+        "en": "Thrust - Left sector pressure",
+        "de": "Vorschubdruck linker Sektor in Bohrrichtung",
+        "id": "AZ"
+      },
+      {
+        "number": "15",
+        "en": "Thrust - Right sector position",
+        "de": "Vorschubweg rechter Sektor in Bohrrichtung",
+        "id": "BA"
+      },
+      {
+        "number": "16",
+        "en": "Thrust - Bottom sector position",
+        "de": "Vorschubweg unterer Sektor",
+        "id": "BB"
+      },
+      {
+        "number": "17",
+        "en": "Thrust - Left sector position",
+        "de": "Vorschubweg linker Sektor in Bohrrichtung",
+        "id": "BC"
+      },
+      {
+        "number": "18",
+        "en": "Thrust - Top sector position",
+        "de": "Vorschubweg oberer Sektor",
+        "id": "BD"
+      },
+      {
+        "number": "19",
+        "en": "Penetration",
+        "de": "Penetration",
+        "id": "BE"
+      },
+      {
+        "number": "20",
+        "en": "Thrust Total force",
+        "de": "Vorschubkraft total",
+        "id": "BF"
+      },
+      {
+        "number": "21",
+        "en": "Mortar - Volume all lines",
+        "de": "Mörtelvolumen Total",
+        "id": "BW"
+      },
+      {
+        "number": "22",
+        "en": "Earth pressure 1 shield top",
+        "de": "Erddrucksensor 1 Schild oben",
+        "id": "BX"
+      },
+      {
+        "number": "23",
+        "en": "Earth pressure 2 shield right",
+        "de": "Erddrucksensor 2 Schild rechts",
+        "id": "BY"
+      },
+      {
+        "number": "24",
+        "en": "Earth pressure 3 shield right bottom",
+        "de": "Erddrucksensor 3 Schild rechts unten",
+        "id": "BZ"
+      },
+      {
+        "number": "25",
+        "en": "Earth pressure 4 shield left",
+        "de": "Erddrucksensor 4 Schild links",
+        "id": "CA"
+      },
+      {
+        "number": "26",
+        "en": "Earth pressure 5 shield left bottom",
+        "de": "Erddrucksensor 5 Schild links unten",
+        "id": "CB"
+      },
+      {
+        "number": "27",
+        "en": "Earth pressure 6 screw conv. front",
+        "de": "Erddrucksensor 6 Förderschnecke vorne",
+        "id": "CC"
+      },
+      {
+        "number": "28",
+        "en": "Earth pressure 7 screw conv. rear",
+        "de": "Erddrucksensor 7 Förderschnecke hinten",
+        "id": "CD"
+      },
+      {
+        "number": "29",
+        "en": "Screw conveyor pressure",
+        "de": "Druck Antrieb Förderschnecke",
+        "id": "CE"
+      },
+      {
+        "number": "30",
+        "en": "Screw conveyor speed",
+        "de": "Drehzahl Förderschnecke",
+        "id": "CF"
+      },
+      {
+        "number": "31",
+        "en": "Screw conveyor torque",
+        "de": "Drehmoment Förderschnecke",
+        "id": "CG"
+      },
+      {
+        "number": "32",
+        "en": "Conv. C2 theoretical weight belt weigher",
+        "de": "Bandwaage Förderband C2 theoretisch ",
+        "id": "CH"
+      },
+      {
+        "number": "33",
+        "en": "Conv. C2 actual weight belt weigher",
+        "de": "Bandwaage Förderband C2 effektiv",
+        "id": "CI"
+      },
+      {
+        "number": "34",
+        "en": "Conv. C2 belt weigher weight eff./theo.",
+        "de": "Bandwaage Förderband C2 Eff./Theo.",
+        "id": "CJ"
+      },
+      {
+        "number": "35",
+        "en": "Conv. C2 theo. weight volume scanner",
+        "de": "Volumenscanner Förderband C2 theoretisch ",
+        "id": "CT"
+      },
+      {
+        "number": "36",
+        "en": "Conv. C2 actual weight volume scanner",
+        "de": "Volumenscanner Förderband C2 effektiv",
+        "id": "CU"
+      },
+      {
+        "number": "37",
+        "en": "Conv. C2 volume scanner weight eff./the.",
+        "de": "Volumenscanner Förderband C2 Eff./Theo.",
+        "id": "CV"
+      },
+      {
+        "number": "38",
+        "en": "Pitching",
+        "de": "Neigung",
+        "id": "CW"
+      },
+      {
+        "number": "39",
+        "en": "Rolling",
+        "de": "Verrollung",
+        "id": "CX"
+      },
+      {
+        "number": "40",
+        "en": "Foam Mode (Off=0, Man=1, Auto=2)",
+        "de": "Schaum manuell / automatisch",
+        "id": "DA"
+      },
+      {
+        "number": "41",
+        "en": "Thrust - Top sector force",
+        "de": "Vorschubkraft oberer Sektor",
+        "id": "DB"
+      },
+      {
+        "number": "42",
+        "en": "Thrust - Right sector force",
+        "de": "Vorschubkraft rechter Sektor in Bohrrichtung",
+        "id": "DC"
+      },
+      {
+        "number": "43",
+        "en": "Thrust - Bottom sector force",
+        "de": "Vorschubkraft unterer Sektor",
+        "id": "DD"
+      },
+      {
+        "number": "44",
+        "en": "Thrust - Left sector force",
+        "de": "Vorschubkraft linker Sektor in Bohrrichtung",
+        "id": "DE"
+      },
+      {
+        "number": "45",
+        "en": "Conv. C2 weight belt weigher density",
+        "de": "Bandwaage Förderband C2 spezifisches Gewicht",
+        "id": "DU"
+      },
+      {
+        "number": "46",
+        "en": "Conv. C2 weight volume scanner density",
+        "de": "Bandwaage Förderband C2 spezifisches Gewicht",
+        "id": "DV"
+      }
+    ]
 }
