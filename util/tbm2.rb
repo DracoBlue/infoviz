@@ -8,7 +8,7 @@
 #
 
 require 'rubygems'
-require 'json'
+require 'json/ext'
 require 'thor'
 require 'thor/actions'
 require 'fastercsv'
@@ -125,6 +125,35 @@ class TBM < Thor
     
   end
 
+
+  desc "zuordnung FILE OUT", "generates JSON from Zuordnungstabelle"
+  def zuordnung(filename_in_csv, filename_out_json)
+    
+    out_file = File.open(filename_out_json, 'w')
+    
+    arr = []
+    zuordnung = {:test => :test}
+    
+    FasterCSV.foreach(filename_in_csv, {:headers => false, :col_sep => "\t"}) do |row|
+      
+      unless (row == []) or !row[0]
+        o =  {
+          :number => row[0],
+          :id => row[1],
+          :en => row[2],
+          :de => row[3]
+        }
+        arr << o
+        zuordnung[row[0]] = o
+        # puts o
+      end
+      
+    end
+
+    out_file.write(JSON.pretty_generate(arr))
+    #out_file.write(JSON.generate(zuordnung))
+
+  end
 
   private
   def get_schichten_data(file)
