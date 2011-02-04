@@ -6,11 +6,11 @@
     "height" : 25,
     "layers" : 
     [
-      {"id" : 1, "name" : "Fanger (Störungszone)",              "color" :"939393"},
-      {"id" : 2, "name" : "Oberer Buntsandstein / so1-2 (Röt)", "color" :"E3C24D"},
-      {"id" : 3, "name" : "Oberer Buntsandstein / so2 (Röt)",   "color" :"C08829"},
-      {"id" : 4, "name" : "Tertiär/Ton",                        "color" :"778FBA"},
-      {"id" : 5, "name" : "TERTIÄR / Ton mit Braunkohleflözen", "color" :"6CA193"}    
+      {"id" : 1, "name" : "Fanger (Störungszone)",              "color" :"939393", "img":"legende1.png"},
+      {"id" : 2, "name" : "Oberer Buntsandstein / so1-2 (Röt)", "color" :"E3C24D", "img":"legende2.png"},
+      {"id" : 3, "name" : "Oberer Buntsandstein / so2 (Röt)",   "color" :"C08829", "img":"legende3.png"},
+      {"id" : 4, "name" : "Tertiär/Ton",                        "color" :"778FBA", "img":"legende4.png"},
+      {"id" : 5, "name" : "TERTIÄR / Ton mit Braunkohleflözen", "color" :"6CA193", "img":"legende5.png"}    
     ]
   },
   "zuordnung" :

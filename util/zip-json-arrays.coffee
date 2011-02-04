@@ -62,5 +62,6 @@ for key, val of make_obj(merge(a,b))
   puts "#{key} -> #{val}" 
 ###
 
-print_array(c = merge(a,b))
+c = merge(a,b)
+#print_array(c)
 safe_as_file(out_file, make_obj(c))
