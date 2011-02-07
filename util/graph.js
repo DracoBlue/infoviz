@@ -45,15 +45,17 @@ exports.createSegmentsForData = function(data, segments_x, segments_y)
     }
   
     return {
-      "segment_size_x" : segment_size_x,
-      "segment_size_y" : segment_size_y, 
-      "data_length"    : data_length,
-      "segment_value"  : segment_value,
-      "segment_gestein": segment_gestein,
-      "min_x"          : min_x,
-      "max_x"          : max_x,
-      "min_y"          : min_y,
-      "max_y"          : max_y,
+      "segment_size_x"  : segment_size_x,
+      "segment_size_y"  : segment_size_y, 
+      "data_length"     : data_length,
+      "segment_value"   : segment_value,
+      "segment_gestein" : segment_gestein,
+      "min_x"           : min_x,
+      "max_x"           : max_x,
+      "min_y"           : min_y,
+      "max_y"           : max_y,
+//      "avg_x"           : avg_x,
+//      "avg_y"           : avg_y,
     };
   
 };

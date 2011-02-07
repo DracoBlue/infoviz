@@ -69,12 +69,14 @@ features = (arr) ->
 
 remove_top_percentile = (perc, arr) ->
   feat = features(arr)
+  puts "#{feat.max.x}, #{feat.max.y}"
   k1 = 0
   k2 = Math.ceil(feat.n * (1 - perc) )
   return arr[k1..k2]
 
 
 c = merge(a,b)
+###
 sortedX = _.sortBy(c, sort_by_attr('x'))
 sortedY = _.sortBy(c, sort_by_attr('y'))
 
@@ -86,8 +88,11 @@ clean = _.intersect(cleanX, cleanY)
 
 puts "#{c.length}, #{cleanX.length}, #{cleanY.length}, #{clean.length}"
 
+###
 
-data = graph.createSegmentsForData(clean, 100, 100)
+
+
+data = graph.createSegmentsForData(c, 10, 10)
 
 #print_array(c)
 safe_as_file(out_file, data)

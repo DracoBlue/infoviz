@@ -1,5 +1,11 @@
-for i in (3..44)
-  for k in ((i+1)..45)
-    system "coffee zip-json-arrays.coffee out/#{i}.json out/#{k}.json out2/#{i}_#{k}.json"
+program = "coffee big_picture.coffee"
+indir   = "out"
+outdir  = "out2"
+
+min = 3
+max = 45
+for i in (min..max-1)
+  for k in ((i+1)..max)
+    system "#{program} #{indir}/#{i}.json #{indir}/#{k}.json #{outdir}/#{i}_#{k}.json"
   end
 end

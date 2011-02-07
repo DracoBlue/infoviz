@@ -5,12 +5,15 @@
 
 Canvas = require 'Canvas'
 fs = require 'fs'
+puts = require('sys').puts
 
 #puts process.argv
-i = 0
+i = 2
 filename  = process.argv[i++] || 'test.png'
 width     = Number(process.argv[i++]) || 500
 height    = Number(process.argv[i++]) || 1
+
+puts "filename:#{filename}"
 
 rest = process.argv[i...process.argv.length]
 

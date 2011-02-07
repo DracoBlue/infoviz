@@ -72,7 +72,6 @@ class TBM < Thor
       end
     end
     
-    puts "please run the following command"
     puts "#{program} #{args}"
   end
 
@@ -86,6 +85,7 @@ class TBM < Thor
     
     
     sensors = (2..45) # eigentlich 6..46
+    #sensors = (4..5)
     out_files = {}
     sensors.each do |s|
       out_files[s] = File.open("#{out_dir}/#{s+1}.json", 'w')
