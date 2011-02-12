@@ -3,7 +3,7 @@
 # => erzeugt ein Bild test.png 500x100 mit 1px links ROT, ganz viel GELB und rechts 1px BLAU
 # => letzte Farbe geht immer bis zum Ende
 
-Canvas = require 'Canvas'
+Canvas = require 'canvas'
 fs = require 'fs'
 puts = require('sys').puts
 
