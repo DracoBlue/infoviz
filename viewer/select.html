@@ -73,9 +73,9 @@
                     
                     new Request.JSON({
                         'url': 'data/' + first_attribute_id + '_' + second_attribute_id + '.json',
-                        'onSuccess': function(response){
+                        'onSuccess': function(data){
                             attribute_database.retrieveLayers(function(layers) {
-                                graph.refresh(response.values, layers);
+                                graph.refresh(data, layers);
                             });
                         },
                         'onFailure': function() {

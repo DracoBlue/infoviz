@@ -37,9 +37,12 @@ project.LayersLegend.prototype = {
             layers.each(function(layer)
             {
                 self.dom_element.grab(new Element('li', {
-                    'text': '<img src="' + layer.img + '" />' + layer.name,
                     'style': 'color: #' + layer.color
-                }));
+                }).adopt([new Element('img', {
+                    'src': layer.img
+                }), new Element('span', {
+                    'text': layer.name,
+                })]));
             });
         });
     },

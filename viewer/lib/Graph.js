@@ -9,8 +9,8 @@ project.Graph.prototype = {
     ],
 
     options: {
-        'segments_x': 24,
-        'segments_y': 48
+        'segments_x': 10,
+        'segments_y': 10
     },
 
     initialize: function(options)
@@ -25,14 +25,16 @@ project.Graph.prototype = {
         return this.dom_element;
     },
 
-    createDotsForData: function(data, layers)
+    createDotsForData: function(response_data, layers)
     {
         var dots = [];
 
-        if (data.length === 0)
+        if (response_data.data_length === 0)
         {
             return [[0,0,0,0], dots];
         }
+        console.log(response_data);
+
 
         var layer_id_to_color_map = {};
 
@@ -40,47 +42,22 @@ project.Graph.prototype = {
             layer_id_to_color_map[value.id] = '#' + value.color;
         });
 
-        /*
-         * First of all, let's find out what is the minimum x,y and maximum x,y
-         */
+        var max_x = response_data.max_x;
+        var max_y = response_data.max_y;
+        var min_x = response_data.min_x;
+        var min_y = response_data.min_y;
+        var data_length = response_data.data_length;
+        var segment_value = response_data.segment_value;
+        var segment_gestein = response_data.segment_gestein;
+        var segment_size_x = response_data.segment_size_x;
+        var segment_size_y = response_data.segment_size_y;
 
-        var max_x = data[0].x;
-        var max_y = data[0].x;
-        var min_x = data[0].x;
-        var min_y = data[0].y;
-
-        var data_length = data.length;
-        for ( var i = 1; i < data_length; i++)
-        {
-            min_x = Math.min(data[i].x, min_x);
-            min_y = Math.min(data[i].y, min_y);
-            max_x = Math.max(data[i].x, max_x);
-            max_y = Math.max(data[i].y, max_y);
-        }
-        
         console.log('min', 'x', min_x, max_x, 'y', min_y, max_y);
         
-        var segment_size_x = ((max_x - min_x) / this.options.segments_x);
-        var segment_size_y = ((max_y - min_y) / this.options.segments_y);
-        var segment_gestein = {};
+        var segment_size_x = ((max_x - min_x) / segment_size_x);
+        var segment_size_y = ((max_y - min_y) / segment_size_y);
         
-        console.log('segement_size', segment_size_x, segment_size_y);
-        /*
-         * Now let's find out, what values the segments have
-         */
-        
-        var segment_value = {};
-        
-        for ( var i = 0; i < data_length; i++)
-        {
-            var segment_x = Math.floor((data[i].x - min_x) / segment_size_x);
-            var segment_y = Math.floor((data[i].y - min_y) / segment_size_y);
-            
-            segment_value[segment_x] = segment_value[segment_x] || {};
-            segment_value[segment_x][segment_y] = (segment_value[segment_x][segment_y] || 0) + 1;
-            segment_gestein[segment_x] = segment_gestein[segment_x] || {};
-            segment_gestein[segment_x][segment_y] = data[i].g;
-        }
+        console.log('segment_size', segment_size_x, segment_size_y);
         
         /*
          * Now let's walk through all segments and see if we got a point there.
@@ -93,29 +70,30 @@ project.Graph.prototype = {
             {
                 if (typeof segment_value[x] !== 'undefined' && typeof segment_value[x][y] !== 'undefined')
                 {
-                    var alpha = (segment_value[x][y] / data_length) * 1.33333;
+                    // var alpha = (segment_value[x][y] / data_length) * 1.33333;
+                    console.log('x,y', x, y);
+                    var alpha = 1;
                     dots.push( {
                         x: x * segment_size_x + min_x,
                         title: 'Value: ' +  alpha,
                         y: y * segment_size_y + min_y,
                         shape: 'square',
-                        style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
+                        // style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
+                        style: pv.color('#BBBBBB', alpha),
                         pos: segment_value[x][y]
                     });
                 }
             }
         }
         
-        console.log(segment_value);
-
         return [[min_x, max_x, min_y, max_y], dots, [segment_size_x, segment_size_y]];
     },
 
-    refresh: function(data, layers)
+    refresh: function(response_data, layers)
     {
         var self = this;
 
-        var graph_data = this.createDotsForData(data, layers);
+        var graph_data = this.createDotsForData(response_data, layers);
 
         var min_x = graph_data[0][0];
         var max_x = graph_data[0][1];
