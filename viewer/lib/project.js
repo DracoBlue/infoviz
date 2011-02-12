@@ -25,3 +25,10 @@ project.chain = function()
 
     start_func();
 };
+
+if (typeof console === 'undefined')
+{
+    console = {
+        'log': function() {}
+    };
+}
