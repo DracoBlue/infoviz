@@ -9,8 +9,8 @@ project.Graph.prototype = {
     ],
 
     options: {
-        'segments_x': 10,
-        'segments_y': 10
+        'segments_x': 100,
+        'segments_y': 100
     },
 
     initialize: function(options)
@@ -51,13 +51,14 @@ project.Graph.prototype = {
         var segment_gestein = response_data.segment_gestein;
         var segment_size_x = response_data.segment_size_x;
         var segment_size_y = response_data.segment_size_y;
+        
+        this.options.segments_x = Math.round((max_x - min_x)/segment_size_x); 
+        this.options.segments_y = Math.round((max_y - min_y)/segment_size_y); 
 
         console.log('min', 'x', min_x, max_x, 'y', min_y, max_y);
         
-        var segment_size_x = ((max_x - min_x) / segment_size_x);
-        var segment_size_y = ((max_y - min_y) / segment_size_y);
-        
         console.log('segment_size', segment_size_x, segment_size_y);
+        console.log('segment_count', this.options.segments_x, this.options.segments_y);
         
         /*
          * Now let's walk through all segments and see if we got a point there.
@@ -70,16 +71,15 @@ project.Graph.prototype = {
             {
                 if (typeof segment_value[x] !== 'undefined' && typeof segment_value[x][y] !== 'undefined')
                 {
-                    // var alpha = (segment_value[x][y] / data_length) * 1.33333;
-                    console.log('x,y', x, y);
-                    var alpha = 1;
+                    var alpha = (segment_value[x][y] / data_length) * 1.33333;
+//                    console.log('x,y', x, y, x * segment_size_x + min_x, y * segment_size_y + min_y);
+                    //var alpha = 1;
                     dots.push( {
                         x: x * segment_size_x + min_x,
-                        title: 'Value: ' +  alpha,
                         y: y * segment_size_y + min_y,
+                        title: 'Value: ' +  alpha,
                         shape: 'square',
-                        // style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
-                        style: pv.color('#BBBBBB', alpha),
+                        style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
                         pos: segment_value[x][y]
                     });
                 }
@@ -103,12 +103,13 @@ project.Graph.prototype = {
         var segment_size_x = graph_data[2][0];
         var segment_size_y = graph_data[2][1];
         
+        console.log('graph', graph_data);
         var w = 600, h = 300;
         
         var segment_height = w / self.options.segments_y;
         var segment_width = h / self.options.segments_x;
         
-        console.log('segment_size', segment_size_x, segment_size_y)
+        console.log('segment_size ??', segment_size_x, segment_size_y);
         var svg = this.dom_element.getElement('svg');
         if (svg)
         {
