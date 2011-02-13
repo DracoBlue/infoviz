@@ -41,7 +41,7 @@ project.LayersLegend.prototype = {
                 }).adopt([new Element('img', {
                     'src': layer.img
                 }), new Element('span', {
-                    'text': layer.name,
+                    'text': layer.name
                 })]));
             });
         });
