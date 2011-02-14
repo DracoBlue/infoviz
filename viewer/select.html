@@ -77,6 +77,8 @@
                         file_name = second_attribute_id + '_' + first_attribute_id + '.json';
                     }
                     
+                    file_name = '100x100/' + file_name;
+                    
                     graph_header.setText(first_attribute_name + ' (x) vs. ' + second_attribute_name + ' (y)');
                     
                     $('graph').grab(graph);

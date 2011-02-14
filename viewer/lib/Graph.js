@@ -71,7 +71,7 @@ project.Graph.prototype = {
             {
                 if (typeof segment_value[x] !== 'undefined' && typeof segment_value[x][y] !== 'undefined')
                 {
-                    var alpha = Math.max(0.3, Math.min((segment_value[x][y] / data_length) * segment_size_x, 1.0));
+                    var alpha = Math.max(0.3, Math.min((segment_value[x][y] / data_length) * (segment_size_x * segment_size_y), 1.0));
                     var color = pv.color(layer_id_to_color_map[segment_gestein[x][y]]);
 
                     var data = {
