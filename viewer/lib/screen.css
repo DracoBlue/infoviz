@@ -1,3 +1,11 @@
+* {
+  font-family: Helvetica, Arial, "MS Trebuchet", sans-serif;
+}
+
+ul.attribute_selector {
+  font-size: 0.7em;
+}
+
 #center {
     width: 980px;
     margin: 0 auto;
