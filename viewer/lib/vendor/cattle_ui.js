@@ -159,7 +159,7 @@ cattle_ui.Header = new Class( {
 
     setText: function(text)
     {
-        this.dom_element.set('text');
+        this.dom_element.set('text', text);
     },
 
     getText: function()
