@@ -45,21 +45,35 @@
             $(window).addEvent('domready', function(){
                 var attribute_database = new project.AttributeDatabase();
                 
+                var graph_header = cattle_ui.ui('header', {
+                    'text': 'Graph'
+                });
+                
                 var refresh_graph_trigger = function(){
-                    var first_attribute_id = first_attribute_selector.getSelectedAttributeId();
                     var second_attribute_id = 3;
+                    var first_attribute_id = 3;
                     
+                    try {
+                        first_attribute_id = first_attribute_selector.getSelectedAttributeId();
+                    } 
+                    catch (e) {
+                    }
                     try {
                         second_attribute_id = second_attribute_selector.getSelectedAttributeId();
                     } 
                     catch (e) {
                     }
                     
+                    var invers = false;
+                    
                     var file_name = first_attribute_id + '_' + second_attribute_id + '.json';
                     if (parseInt(first_attribute_id, 10) > parseInt(second_attribute_id, 10))
                     {
+                        invers = true;
                         file_name = second_attribute_id + '_' + first_attribute_id + '.json';
                     }
+                    
+                    graph_header.setText('Graph');
                     
                     $('graph').grab(graph);
                     
@@ -67,7 +81,7 @@
                         'url': 'data/' + file_name,
                         'onSuccess': function(data){
                             attribute_database.retrieveLayers(function(layers) {
-                                graph.refresh(data, layers);
+                                graph.refresh(data, layers, invers);
                             });
                         },
                         'onFailure': function() {
@@ -119,9 +133,7 @@
                 }).toElement().inject($('first_selector'), 'before');
                 $('first_selector').adopt(first_attribute_selector);
                 
-                cattle_ui.ui('header', {
-                    'text': 'Graph'
-                }).toElement().inject($('graph_and_legend'), 'top');
+                graph_header.toElement().inject($('graph_and_legend'), 'top');
 
                 cattle_ui.ui('header', {
                     'text': 'Legende'
