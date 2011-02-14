@@ -25,7 +25,7 @@ project.Graph.prototype = {
         return this.dom_element;
     },
 
-    createDotsForData: function(response_data, layers)
+    createDotsForData: function(response_data, layers, invers)
     {
         var dots = [];
 
@@ -73,27 +73,42 @@ project.Graph.prototype = {
                 {
                     var alpha = Math.max(0.3, Math.min((segment_value[x][y] / data_length) * segment_size_x, 1.0));
                     var color = pv.color(layer_id_to_color_map[segment_gestein[x][y]]);
-                    
-                    dots.push( {
-                        x: x * segment_size_x + min_x,
-                        y: y * segment_size_y + min_y,
+
+                    var data = {
                         title: 'Value: ' +  alpha,
                         shape: 'square',
-                        style: color.alpha(alpha),
-                        pos: segment_value[x][y]
-                    });
+                        style: color.alpha(alpha)
+                    };
+                    
+                    if (invers)
+                    {
+                        data['x'] = y * segment_size_y + min_y;
+                        data['y'] = x * segment_size_x + min_x;
+                    }
+                    else
+                    {
+                        data['x'] = x * segment_size_x + min_x;
+                        data['y'] = y * segment_size_y + min_y;
+                    }
+                    
+                    dots.push(data);
                 }
             }
+        }
+        
+        if (invers)
+        {
+            return [[min_y, max_y, min_x, max_x], dots, [segment_size_y, segment_size_x]];
         }
         
         return [[min_x, max_x, min_y, max_y], dots, [segment_size_x, segment_size_y]];
     },
 
-    refresh: function(response_data, layers)
+    refresh: function(response_data, layers, invers)
     {
         var self = this;
 
-        var graph_data = this.createDotsForData(response_data, layers);
+        var graph_data = this.createDotsForData(response_data, layers, invers);
 
         var min_x = graph_data[0][0];
         var max_x = graph_data[0][1];
