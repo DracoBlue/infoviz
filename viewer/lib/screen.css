@@ -1,3 +1,8 @@
+#center {
+    width: 980px;
+    margin: 0 auto;
+}
+
 #controls .ui-button {
     padding: 5px;
     margin: 5px;
@@ -30,14 +35,19 @@ ul.attribute_selector li {
 }
 
 #first_selector, #second_selector {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    height: 150px;
+    overflow: hidden;
+    width: 150px;
+    float: right;
 }
 
 #graph_and_legend {
     height: 325px;
+    width: 650px;
+    float: left;
+    position: fixed;
+    top: 10px;
 }
+
 #graph {
     width:625px;
     height:325px;
