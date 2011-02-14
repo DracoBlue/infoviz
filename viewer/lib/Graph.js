@@ -71,15 +71,15 @@ project.Graph.prototype = {
             {
                 if (typeof segment_value[x] !== 'undefined' && typeof segment_value[x][y] !== 'undefined')
                 {
-                    var alpha = (segment_value[x][y] / data_length) * 1.33333;
-//                    console.log('x,y', x, y, x * segment_size_x + min_x, y * segment_size_y + min_y);
-                    //var alpha = 1;
+                    var alpha = Math.max(0.3, Math.min((segment_value[x][y] / data_length) * segment_size_x, 1.0));
+                    var color = pv.color(layer_id_to_color_map[segment_gestein[x][y]]);
+                    
                     dots.push( {
                         x: x * segment_size_x + min_x,
                         y: y * segment_size_y + min_y,
                         title: 'Value: ' +  alpha,
                         shape: 'square',
-                        style: pv.color(layer_id_to_color_map[segment_gestein[x][y]], alpha),
+                        style: color.alpha(alpha),
                         pos: segment_value[x][y]
                     });
                 }
@@ -106,10 +106,11 @@ project.Graph.prototype = {
         console.log('graph', graph_data);
         var w = 600, h = 300;
         
-        var segment_height = w / self.options.segments_y;
-        var segment_width = h / self.options.segments_x;
+        var segment_height = h / self.options.segments_y;
+        var segment_width = w / self.options.segments_x;
         
         console.log('segment_size ??', segment_size_x, segment_size_y);
+        console.log('h/w', segment_height, segment_width);
         var svg = this.dom_element.getElement('svg');
         if (svg)
         {
@@ -119,11 +120,11 @@ project.Graph.prototype = {
         this.dom_element.empty();
         this.dom_element.fade('out');
         /* Sizing and scales. */
-        var x = pv.Scale.linear(min_x, max_x).range(0, w), y = pv.Scale
-                .linear(min_y, max_y).range(0, h);
+        var x = pv.Scale.linear(min_x, max_x).range(1, w);
+        var y = pv.Scale.linear(min_y, max_y).range(1, h);
 
         /* The root panel. */
-        var vis = new pv.Panel().width(w).height(h).bottom(20).left(20).right(10).top(5);
+        var vis = new pv.Panel().width(w).height(h).bottom(50).left(50).right(10).top(5);
 
         /* Y-axis and ticks. */
         vis.add(pv.Rule).data(y.ticks()).bottom(y).strokeStyle(function(d)
