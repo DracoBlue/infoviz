@@ -52,14 +52,18 @@
                 var refresh_graph_trigger = function(){
                     var second_attribute_id = 3;
                     var first_attribute_id = 3;
+                    var first_attribute_name = 'C';
+                    var second_attribute_name = 'C';
                     
                     try {
                         first_attribute_id = first_attribute_selector.getSelectedAttributeId();
+                        first_attribute_name = first_attribute_selector.getSelectedAttributeName();
                     } 
                     catch (e) {
                     }
                     try {
                         second_attribute_id = second_attribute_selector.getSelectedAttributeId();
+                        second_attribute_name = second_attribute_selector.getSelectedAttributeName();
                     } 
                     catch (e) {
                     }
@@ -73,7 +77,7 @@
                         file_name = second_attribute_id + '_' + first_attribute_id + '.json';
                     }
                     
-                    graph_header.setText('Graph');
+                    graph_header.setText(first_attribute_name + ' (x) vs. ' + second_attribute_name + ' (y)');
                     
                     $('graph').grab(graph);
                     
