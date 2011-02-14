@@ -35,9 +35,9 @@
                 </div>
             </div>
             <div class="ui-helper-clearfix" style="float: right; width: 300px;">
-                <div id="first_selector" class="ui-helper-clearfix">
-                </div>
                 <div id="second_selector" class="ui-helper-clearfix">
+                </div>
+                <div id="first_selector" class="ui-helper-clearfix">
                 </div>
             </div>
         </div>
@@ -136,7 +136,7 @@
                 
                 cattle_ui.ui('header', {
                     'text': 'Attribute'
-                }).toElement().inject($('first_selector'), 'before');
+                }).toElement().inject($('second_selector'), 'before');
                 $('first_selector').adopt(first_attribute_selector);
                 
                 graph_header.toElement().inject($('graph_and_legend'), 'top');
