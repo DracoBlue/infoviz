@@ -96,7 +96,11 @@
                     }).get();
                 };
 
-                var layers_legend = new project.LayersLegend(attribute_database, {
+                project.layers_legend = new project.LayersLegend(attribute_database, {
+                    'onChange': function()
+                     {
+                        refresh_graph_trigger();
+                     }
                 });
                 
                 var first_attribute_selector = new project.AttributeSelector(attribute_database, {
@@ -144,7 +148,7 @@
                 cattle_ui.ui('header', {
                     'text': 'Legende'
                 }).toElement().inject($('layers_legend'));
-                $('layers_legend').grab(layers_legend);
+                $('layers_legend').grab(project.layers_legend);
 
 
                 $('second_selector').grab(second_attribute_selector);
