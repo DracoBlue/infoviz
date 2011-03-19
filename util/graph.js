@@ -25,7 +25,6 @@ exports.createSegmentsForData = function(data, segments_x, segments_y)
   
     var segment_size_x = ((max_x - min_x) / segments_x);
     var segment_size_y = ((max_y - min_y) / segments_y);
-    var segment_gestein = {};
   
     /*
      * Now let's find out, what values the segments have
@@ -39,9 +38,9 @@ exports.createSegmentsForData = function(data, segments_x, segments_y)
         var segment_y = Math.floor((data[i].y - min_y) / segment_size_y);
       
         segment_value[segment_x] = segment_value[segment_x] || {};
-        segment_value[segment_x][segment_y] = (segment_value[segment_x][segment_y] || 0) + 1;
-        segment_gestein[segment_x] = segment_gestein[segment_x] || {};
-        segment_gestein[segment_x][segment_y] = data[i].g;
+        segment_value[segment_x][segment_y] = segment_value[segment_x][segment_y] || {};
+        segment_value[segment_x][segment_y][data[i].g] = (segment_value[segment_x][segment_y][data[i].g] || 0) + 1;
+
     }
   
     return {
@@ -49,13 +48,10 @@ exports.createSegmentsForData = function(data, segments_x, segments_y)
       "segment_size_y"  : segment_size_y, 
       "data_length"     : data_length,
       "segment_value"   : segment_value,
-      "segment_gestein" : segment_gestein,
       "min_x"           : min_x,
       "max_x"           : max_x,
       "min_y"           : min_y,
       "max_y"           : max_y,
-//      "avg_x"           : avg_x,
-//      "avg_y"           : avg_y,
     };
   
 };

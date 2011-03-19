@@ -21,10 +21,10 @@ merge = (a,b) ->
   _.map(_.zip(a,b), (x) ->
     [a, b] = x
     obj = 
-      g: a.g
-      c: a.c
-      x: a.v
-      y: b.v
+      g: a.g  # gestein
+      c: a.c  # circle
+      x: a.v  # x (value von a)
+      y: b.v  # y (value von b)
     #puts "#{obj.x}, #{obj.y}"
     return obj
   )
