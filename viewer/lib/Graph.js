@@ -37,16 +37,13 @@ project.Graph.prototype = {
 
 
         var layer_id_to_color_map = {};
-        var layer_enabled_map = {};
 
         layers.each(function(value, key) {
             layer_id_to_color_map[value.id] = '#' + value.color;
-            layer_enabled_map[value.id] = false;
         });
         
-        project.layers_legend.getEnabledLayers().each(function(layer) {
-            layer_enabled_map[layer.id] = true;
-        });
+        var enabled_layers = project.layers_legend.getEnabledLayers();
+        var enabled_layers_length = enabled_layers.length;
 
         var max_x = response_data.max_x;
         var max_y = response_data.max_y;
@@ -77,30 +74,35 @@ project.Graph.prototype = {
             {
                 if (typeof segment_value[x] !== 'undefined' && typeof segment_value[x][y] !== 'undefined')
                 {
-                    var gestein = segment_gestein[x][y];
-                    if (layer_enabled_map[gestein])
+                    var has_value = false;
+                    for ( var g = 0; g < enabled_layers_length; g++)
                     {
-                        var alpha = 0.3 + Math.max(0.0, Math.min((segment_value[x][y] / data_length) * (segment_size_x * segment_size_y * 2), 0.7));
-                        var color = pv.color(layer_id_to_color_map[gestein]);
+                        var gestein = enabled_layers[g].id;
+                        if (!has_value && typeof segment_value[x][y][gestein] !== 'undefined')
+                        {
+                            has_value = true;
+                            var alpha = 0.3 + Math.max(0.0, Math.min((segment_value[x][y][gestein] / data_length) * (segment_size_x * segment_size_y * 2), 0.7));
+                            var color = pv.color(layer_id_to_color_map[gestein]);
 
-                        var data = {
-                            title: 'Value: ' +  alpha,
-                            shape: 'square',
-                            style: color.alpha(alpha)
-                        };
+                            var data = {
+                                title: 'Value: ' +  alpha,
+                                shape: 'square',
+                                style: color.alpha(alpha)
+                            };
                         
-                        if (invers)
-                        {
-                            data['x'] = y * segment_size_y + min_y;
-                            data['y'] = x * segment_size_x + min_x;
-                        }
-                        else
-                        {
-                            data['x'] = x * segment_size_x + min_x;
-                            data['y'] = y * segment_size_y + min_y;
-                        }
+                            if (invers)
+                            {
+                                data['x'] = y * segment_size_y + min_y;
+                                data['y'] = x * segment_size_x + min_x;
+                            }
+                            else
+                            {
+                                data['x'] = x * segment_size_x + min_x;
+                                data['y'] = y * segment_size_y + min_y;
+                            }
                         
-                        dots.push(data);
+                            dots.push(data);
+                        }
                     }
                 }
             }
